@@ -1,14 +1,13 @@
 import * as React from 'react';
 import ButtonAppBar from './ButtonAppBar'
+import MainView from './MainView'
 
 
 export function Main() {
   return (
     <div>
       <ButtonAppBar />
-      <h1>
-        Hello World
-      </h1>
+      <MainView />
     </div>
   )
 }
