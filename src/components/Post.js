@@ -40,7 +40,7 @@ export default function Post() {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={2} container
+      <Grid container container
         direction="row"
         justify="center"
         alignItems="center">

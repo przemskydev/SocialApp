@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
     height: '65vh',
     overflowY: 'auto',
-    overflowX: 'hidden'
+    overflowX: 'hidden',
   }
 }));
 
