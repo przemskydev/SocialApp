@@ -12,7 +12,7 @@ import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100vh',
+    width: '95vh',
     margin: '1rem 0'
   },
   media: {
@@ -54,7 +54,7 @@ export default function HowAreYou() {
           <PhotoCamera />
         </IconButton>
         <Button variant="outlined" color="primary" style={{ marginLeft: 'auto' }}>
-          Primary
+          SHARE
         </Button>
       </CardActions>
     </Card>
