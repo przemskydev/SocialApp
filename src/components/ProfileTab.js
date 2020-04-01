@@ -70,9 +70,9 @@ export default function FullWidthTabs() {
           aria-label="full width tabs example"
           centered
         >
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Posts" {...a11yProps(0)} />
+          <Tab label="Followers" {...a11yProps(1)} />
+          <Tab label="Following" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -81,13 +81,13 @@ export default function FullWidthTabs() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          Item One
+          Posts
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Item Two
+          Followers
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
+          Following
         </TabPanel>
       </SwipeableViews>
     </div>

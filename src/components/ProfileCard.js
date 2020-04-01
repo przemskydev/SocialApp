@@ -3,6 +3,7 @@ import FullWidthTabs from './ProfileTab';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -12,12 +13,12 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     margin: '1rem auto',
-    width: '60vh'
+    width: '70vh'
   },
-  // image: {
-  //   width: 128,
-  //   height: 128,
-  // },
+  image: {
+    width: 128,
+    height: 128,
+  },
   // img: {
   //   margin: 'auto',
   //   display: 'block',
@@ -36,17 +37,34 @@ export default function ProfileCard() {
           <Grid item xs={12}>
             Profile
           </Grid>
-          <Grid item xs={6}>
-            IMG / NAME
+          <Grid item xs={6}
+            container
+            direction="row"
+            justify="center"
+            alignItems="center">
+            <Grid item xs={6}>
+              <img className={classes.image} alt="logo" src='' />
+            </Grid>
+            <Grid item xs={6}>
+              Name
           </Grid>
-          <Grid item xs={6}>
-            FOLLOW BTN
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6}
+            container
+            direction="row"
+            justify="flex-end">
+            <Button variant="outlined" color="primary">
+              Follow
+            </Button>
+          </Grid>
+          <Grid item xs={6} style={{ borderBottom: '1px solid blue' }}>
             O MNIE
           </Grid>
-          <Grid item xs={6}>
-            JOINED
+          <Grid item xs={6}
+            container
+            direction="row"
+            justify="flex-end">
+            JOINED: TIME
           </Grid>
           <Grid item xs={12}>
             TEKST
