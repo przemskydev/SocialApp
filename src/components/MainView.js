@@ -1,6 +1,6 @@
 import * as React from 'react'
 import HowAreYou from './HowAreYou';
-import Post from './Post'
+import PostsList from './PostsList'
 
 
 export default function MainView() {
@@ -8,9 +8,7 @@ export default function MainView() {
   return (
     <React.Fragment>
       <HowAreYou />
-      <Post />
-      <Post />
-
+      <PostsList />
     </React.Fragment>
   )
 }

@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   paper: {
-    width: '95vh',
+    width: '90vh',
     margin: '1rem 0'
   },
   heading: {
@@ -30,8 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   commentBar: {
     width: '-webkit-fill-available',
-    margin: '1rem auto ',
-
+    margin: '1rem auto '
   }
 }))
 
