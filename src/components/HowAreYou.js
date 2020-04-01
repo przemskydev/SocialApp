@@ -46,7 +46,7 @@ export default function HowAreYou() {
           avatar={
             <Avatar aria-label="recipe" className={classes.avatar}>
               P
-          </Avatar>
+            </Avatar>
           }
           title="Pszemsky"
         />
@@ -63,7 +63,7 @@ export default function HowAreYou() {
           </IconButton>
           <Button variant="outlined" color="primary" style={{ marginLeft: 'auto' }}>
             SHARE
-        </Button>
+          </Button>
         </CardActions>
       </Card>
     </Grid>
