@@ -1,12 +1,9 @@
 import * as React from 'react';
 import FullWidthTabs from './ProfileTab';
 
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
+import { Grid, Paper, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from './img/1ok.jpg'
-import Typography from '@material-ui/core/Typography';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +42,7 @@ export default function ProfileCard() {
       <Paper className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item xs={12} className={classes.profile}>
-            <Typography variant="h6">
+            <Typography variant="h6" style={{ borderBottom: '1px solid #3F51B5' }}>
               My profile
             </Typography>
           </Grid>

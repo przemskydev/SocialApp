@@ -1,14 +1,17 @@
 import * as React from 'react'
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import {
+  Button,
+  TextField,
+  Card,
+  CardHeader,
+  CardActions,
+  Avatar,
+  IconButton,
+  Grid
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { red } from '@material-ui/core/colors';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,31 +35,37 @@ export default function HowAreYou() {
   const classes = useStyles();
 
   return (
-
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            P
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="center"
+      item xs={12}>
+      <Card className={classes.root}>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="recipe" className={classes.avatar}>
+              P
           </Avatar>
-        }
-        title="Pszemsky"
-      />
-      <TextField className={classes.searchBar}
-        id="outlined-textarea"
-        label="How are you?"
-        placeholder="Say something nice"
-        multiline
-        variant="outlined"
-      />
-      <CardActions disableSpacing>
-        <IconButton color="primary" aria-label="upload picture" component="span">
-          <PhotoCamera />
-        </IconButton>
-        <Button variant="outlined" color="primary" style={{ marginLeft: 'auto' }}>
-          SHARE
+          }
+          title="Pszemsky"
+        />
+        <TextField className={classes.searchBar}
+          id="outlined-textarea"
+          label="How are you?"
+          placeholder="Say something nice"
+          multiline
+          variant="outlined"
+        />
+        <CardActions disableSpacing>
+          <IconButton color="primary" aria-label="upload picture" component="span">
+            <PhotoCamera />
+          </IconButton>
+          <Button variant="outlined" color="primary" style={{ marginLeft: 'auto' }}>
+            SHARE
         </Button>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
+    </Grid>
   )
 }
