@@ -12,9 +12,10 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  TextField
+  TextField,
+  IconButton
 } from '@material-ui/core';
-import {FavoriteBorderOutlined, InsertComment} from '@material-ui/icons'
+import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -62,9 +63,13 @@ export default function Post() {
               </Typography>
             </CardContent>
           </Grid>
-          <Grid item xs={12} style={{marginLeft:'1rem'}}>
-            <FavoriteBorderOutlined style={{ color: '#BDBDBD' }}/>
-            <InsertComment style={{ color: '#BDBDBD' }}/>
+          <Grid item xs={12} style={{ marginLeft: '1rem' }}>
+            <IconButton >
+              <FavoriteBorderOutlined style={{ color: '#BDBDBD' }} />
+            </IconButton>
+            <IconButton >
+              <InsertComment style={{ color: '#BDBDBD' }} />
+            </IconButton>
           </Grid>
           <Grid item xs={12}>
             <CardActions disableSpacing>
