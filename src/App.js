@@ -8,27 +8,22 @@ import {
   Route,
   Link
 } from "react-router-dom";
-
 import './App.css';
+import { AuthProvider } from './config/Auth';
+import PrivateRoute from './config/PrivateRoute'
 
 function App() {
 
   return (
-    <Router>
-      <div>
-        <Switch>
-          <Route path='/login'>
-            <SignIn />
-          </Route>
-          <Route path='/register'>
-            <SignUp />
-          </Route>
-          <Route path='/'>
-            <Main />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div>
+            <PrivateRoute exact path='/' component={Main} />
+            <Route exact path='/login' component={SignIn} />
+            <Route exact path='/signup' component={SignUp} />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

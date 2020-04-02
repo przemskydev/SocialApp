@@ -5,6 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import app from "../config/base";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +33,7 @@ export default function ButtonAppBar() {
               9Social
           </Typography>
             <Button color="inherit">Profile</Button>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={() => app.auth().signOut()}>Log Out</Button>
         </Toolbar>
       </AppBar>
     </div>
