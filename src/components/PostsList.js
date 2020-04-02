@@ -19,8 +19,8 @@ export default function PostsList() {
   return (
     <React.Fragment>
       <Typography component="div" className={classes.root}>
-        <Post />
-        <Post />
+        {/* <Post />
+        <Post /> */}
       </Typography>
     </React.Fragment>
   )

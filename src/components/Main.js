@@ -1,6 +1,6 @@
 import * as React from 'react';
-import ButtonAppBar from './ButtonAppBar'
-import MainView from './MainView'
+import ButtonAppBar from './ButtonAppBar';
+import MainView from './MainView';
 import { Typography, Container } from '@material-ui/core';
 import ProfileCard from './ProfileCard';
 
@@ -11,7 +11,7 @@ export function Main() {
       <Container>
         <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '90vh', paddingTop: '64px' }}>
           <MainView />
-          {/* <ProfileCard /> */}
+          {/* <ProfileCard/> */}
         </Typography>
       </Container>
     </div>

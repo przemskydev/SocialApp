@@ -26,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
     width: '90vh',
     margin: '1rem 0'
   },
+  comment: {
+    width: '80vh',
+    margin: '1rem 0'
+  },
   heading: {
     width: '-webkit-fill-available',
   },
@@ -37,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Post() {
   const classes = useStyles();
+  let avatar = 'P';
+  let author = "Pszemsky";
+  let postContent = `This impressive paella is a perfect party dish and a fun meal to cook together with your
+  guests. Add 1 cup of frozen peas along with the mussels, if you like.`;
+  let commentContent = 'comment'
 
   return (
     <div className={classes.root}>
@@ -45,24 +54,26 @@ export default function Post() {
         justify="center"
         alignItems="center">
         <Card className={classes.paper}>
+          {/* header */}
           <Grid item xs={12}>
             <CardHeader
               avatar={
                 <Avatar aria-label="recipe" className={classes.avatar}>
-                  P
+                  {avatar}
                 </Avatar>
               }
-              title="Pszemsky"
+              title={author}
             />
           </Grid>
+          {/* post content */}
           <Grid item xs={12}>
             <CardContent>
               <Typography variant="body2" color="textSecondary" component="p">
-                This impressive paella is a perfect party dish and a fun meal to cook together with your
-                guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                {postContent}
               </Typography>
             </CardContent>
           </Grid>
+          {/* like buttons */}
           <Grid item xs={12} style={{ marginLeft: '1rem' }}>
             <IconButton >
               <FavoriteBorderOutlined style={{ color: '#BDBDBD' }} />
@@ -71,6 +82,7 @@ export default function Post() {
               <InsertComment style={{ color: '#BDBDBD' }} />
             </IconButton>
           </Grid>
+          {/* add comment section */}
           <Grid item xs={12}>
             <CardActions disableSpacing>
               <ExpansionPanel className={classes.heading}>
@@ -97,6 +109,26 @@ export default function Post() {
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             </CardActions>
+          </Grid>
+          {/* comments- if they are */}
+          <Grid item xs={12}>
+            <Grid container justify="center">
+              <Card className={classes.comment}>
+                <CardHeader
+                  avatar={
+                    <Avatar aria-label="recipe" className={classes.avatar}>
+                      {avatar}
+                    </Avatar>
+                  }
+                  title={author}
+                />
+                <CardContent>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {commentContent}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
         </Card>
       </Grid>

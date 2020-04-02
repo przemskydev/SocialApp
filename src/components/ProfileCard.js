@@ -25,12 +25,6 @@ const useStyles = makeStyles((theme) => ({
   about: {
     borderBottom: '1px solid #3F51B5',
   }
-  // img: {
-  //   margin: 'auto',
-  //   display: 'block',
-  //   maxWidth: '100%',
-  //   maxHeight: '100%',
-  // },
 }));
 
 export default function ProfileCard() {
