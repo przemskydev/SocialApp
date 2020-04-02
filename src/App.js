@@ -12,17 +12,18 @@ import {
 import './App.css';
 
 function App() {
+
   return (
     <Router>
       <div>
         <Switch>
-          <Route path='/'>
+          <Route path='/login'>
             <SignIn />
           </Route>
           <Route path='/register'>
             <SignUp />
           </Route>
-          <Route path='/home'>
+          <Route path='/'>
             <Main />
           </Route>
         </Switch>
