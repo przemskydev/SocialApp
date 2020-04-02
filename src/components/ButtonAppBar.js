@@ -5,7 +5,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import { Link } from "@reach/router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,13 +28,9 @@ export default function ButtonAppBar() {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            <Link to='/' style={{ textDecoration: 'none', color: 'white' }}>
               9Social
-            </Link>
           </Typography>
-          <Link to='/profile' style={{ textDecoration: 'none', color: 'white' }}>
             <Button color="inherit">Profile</Button>
-          </Link>
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>

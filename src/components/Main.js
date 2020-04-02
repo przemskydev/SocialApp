@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Router } from '@reach/router';
 import ButtonAppBar from './ButtonAppBar';
 import MainView from './MainView';
 import { Typography, Container } from '@material-ui/core';
@@ -11,10 +10,8 @@ export function Main() {
       <ButtonAppBar />
       <Container>
         <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '90vh', paddingTop: '64px' }}>
-          <Router>
-            <MainView path='/' />
-            <ProfileCard path='/profile' />
-          </Router>
+          <MainView />
+          {/* <ProfileCard/> */}
         </Typography>
       </Container>
     </div>
