@@ -1,6 +1,5 @@
-import * as firebase from "firebase/app";
+import firebase from 'firebase';
 import Rebase from 're-base';
-import "firebase/auth";
 import 'firebase/database';
 
 const config = {
@@ -13,8 +12,8 @@ const config = {
   appId: "1:340318617230:web:879fd765098680299fd3df",
   measurementId: "G-1SCE43548K"
 };
+firebase.initializeApp(config)
 
-const app = firebase.initializeApp(config);
-let database = Rebase.createClass(app.database())
+let database = firebase.database()
 
-export {app, database};
+export default database;

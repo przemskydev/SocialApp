@@ -12,7 +12,7 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
-import app from "../config/base";
+import {app} from "../config/base";
 
 
 const useStyles = makeStyles((theme) => ({
