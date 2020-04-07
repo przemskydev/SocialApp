@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 const SignUp = ({ history }) => {
 
   const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('')
+  // const [lastName, setLastName] = useState('')
 
   const handleSetName = () => {
     app
@@ -48,17 +48,21 @@ const SignUp = ({ history }) => {
     .doc(`${firstName}`)
     .set({
       name: firstName,
-      lastName: lastName
     })
   }
 
   const handleSignUp = useCallback(async event => {
     event.preventDefault();
-    const { email, password } = event.target.elements;
+    const { email, password, firstName } = event.target.elements;
     try {
       await app
         .auth()
-        .createUserWithEmailAndPassword(email.value, password.value);
+        .createUserWithEmailAndPassword(email.value, password.value)
+        .then(result=>{
+          return result.user.updateProfile({
+            displayName: firstName.value
+          })
+        });
       history.push("/");
     } catch (error) {
       alert(error);
@@ -79,7 +83,7 @@ const SignUp = ({ history }) => {
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSignUp} >
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 autoComplete="fname"
                 name="firstName"
@@ -87,12 +91,12 @@ const SignUp = ({ history }) => {
                 required
                 fullWidth
                 id="firstName"
-                label="First Name"
+                label="Your Name"
                 autoFocus
                 onChange={e => setFirstName(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
                 required
@@ -103,7 +107,7 @@ const SignUp = ({ history }) => {
                 autoComplete="lname"
                 onChange={e => setLastName(e.target.value)}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"

@@ -13,6 +13,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
+import { app } from "../config/base";
+import { AuthContext } from "../config/Auth";
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '95vh',
@@ -31,6 +35,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const setName = () => {
+  const user = app.auth().currentUser;
+  const name = user.displayName
+
+  return name
+}
+
+const setAvatar = (name) => {
+  const avName = name;
+  let avatar = avName.charAt(0);
+
+  return avatar
+}
+
 export default function HowAreYou() {
   const classes = useStyles();
 
@@ -45,10 +63,10 @@ export default function HowAreYou() {
         <CardHeader
           avatar={
             <Avatar aria-label="recipe" className={classes.avatar}>
-              P
+              {setAvatar(setName())}
             </Avatar>
           }
-          title="Pszemsky"
+          title={setName()}
         />
         <TextField className={classes.searchBar}
           id="outlined-textarea"
