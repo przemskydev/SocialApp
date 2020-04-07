@@ -1,7 +1,8 @@
 import * as firebase from "firebase/app";
-import Rebase from 're-base';
+// import Rebase from 're-base';
 import "firebase/auth";
-import 'firebase/database';
+// import 'firebase/database';
+import 'firebase/firestore'
 
 const config = {
   apiKey: "AIzaSyAMRdszFF6bqd3ga0udY7Pkkl3qulqEOZI",
@@ -15,6 +16,7 @@ const config = {
 };
 
 const app = firebase.initializeApp(config);
-let database = Rebase.createClass(app.database())
+// let fbase = Rebase.createClass(app.database())
 
-export {app, database};
+// export {app, fbase};
+export { app }

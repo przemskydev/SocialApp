@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -12,7 +12,8 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
-import {app} from "../config/base";
+import { app } from "../config/base";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,6 +37,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignUp = ({ history }) => {
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('')
+
+  const handleSetName = () => {
+    app
+    .firestore()
+    .collection('user')
+    .doc(`${firstName}`)
+    .set({
+      name: firstName,
+      lastName: lastName
+    })
+  }
+
   const handleSignUp = useCallback(async event => {
     event.preventDefault();
     const { email, password } = event.target.elements;
@@ -61,9 +77,9 @@ const SignUp = ({ history }) => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSignUp}>
+        <form className={classes.form} noValidate onSubmit={handleSignUp} >
           <Grid container spacing={2}>
-            {/* <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
                 name="firstName"
@@ -73,6 +89,7 @@ const SignUp = ({ history }) => {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={e => setFirstName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -84,8 +101,9 @@ const SignUp = ({ history }) => {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                onChange={e => setLastName(e.target.value)}
               />
-            </Grid> */}
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -116,6 +134,7 @@ const SignUp = ({ history }) => {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleSetName}
           >
             Sign Up
           </Button>
