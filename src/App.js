@@ -4,9 +4,7 @@ import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import './App.css';
 import { AuthProvider } from './config/Auth';

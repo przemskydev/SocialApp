@@ -10,12 +10,21 @@ import {
   Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-
 import { app } from "../config/base";
-import { AuthContext } from "../config/Auth";
 
+const randomColor = () => {
+  let color = '';
+
+  let num1 = (Math.floor(Math.random() * 256)),
+    num2 = (Math.floor(Math.random() * 256)),
+    num3 = (Math.floor(Math.random() * 256));
+
+  color = `rgb(${num1},${num2},${num3})`
+
+  return color;
+
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '56.25%', // 16:9
   },
   avatar: {
-    backgroundColor: red[500],
+    backgroundColor: randomColor(),
   },
   searchBar: {
     margin: 'auto 1rem',

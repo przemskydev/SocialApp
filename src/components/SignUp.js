@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Avatar,
   Button,
@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 const SignUp = ({ history }) => {
 
   const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('')
 
   const handleSetName = () => {
     app
@@ -96,18 +95,6 @@ const SignUp = ({ history }) => {
                 onChange={e => setFirstName(e.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                onChange={e => setLastName(e.target.value)}
-              />
-            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"

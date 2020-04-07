@@ -31,7 +31,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
               9Social
           </Typography>
-            <Button color="inherit">Profile</Button>
+            <Button color="inherit">My Profile</Button>
           <Button color="inherit" onClick={() => app.auth().signOut()}>Log Out</Button>
         </Toolbar>
       </AppBar>
