@@ -35,11 +35,39 @@ export default function PostsList() {
   }
   console.log(post)
 
+  if(!post){
+    return (
+      <>
+        There is no post
+      </>
+    )
+  }
+
+  const renderPostList = () => {
+    console.log(post)
+    if (!post.length) {
+      return (
+        <>
+          There is no post yet
+        </>
+      )
+    }
+
+    return post.map(({ author, context, time }, index) => (
+      <Post
+        key={index}
+        author={author}
+        context={context}
+        time={time}
+      />
+    ))
+  }
+
   return (
     <React.Fragment>
       <Typography component="div" className={classes.root}>
         {
-
+          renderPostList()
         }
       </Typography>
     </React.Fragment>
