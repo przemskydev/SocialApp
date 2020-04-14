@@ -39,12 +39,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function Post() {
+export default function Post(props) {
   const classes = useStyles();
-  let avatar = 'P';
-  let author = "Pszemsky";
-  let postContent = `This impressive paella is a perfect party dish and a fun meal to cook together with your
-  guests. Add 1 cup of frozen peas along with the mussels, if you like.`;
+  let author = props.author;
+  let avatar = author.charAt(0);
+  let postContent = props.context;
   let commentContent = 'comment'
 
   return (
