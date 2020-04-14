@@ -25,13 +25,13 @@ const displayButton = () => {
 }
 
 const userName = () => {
-    const userName = app.auth().currentUser.displayName;
-    return userName;
+  const userName = app.auth().currentUser.displayName;
+  return userName;
 }
 
 const joinDate = () => {
   const joinDate = app.auth().currentUser.metadata.creationTime;
-  const creationDate = joinDate.slice(4,16);
+  const creationDate = joinDate.slice(4, 16);
 
   return creationDate;
 }
@@ -93,68 +93,70 @@ export default function ProfileCard() {
     }
   }
 
-  
+
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Grid container spacing={2}>
-          {/* My profile */}
-          <Grid item xs={12} className={classes.profile}>
-            <Typography variant="h6" style={{ borderBottom: '1px solid #3F51B5' }}>
-              My profile
-            </Typography>
-          </Grid>
-          {/* Image and Name */}
-          <Grid item xs={6}
-            container
-            direction="row"
-            justify="center"
-            alignItems="center">
-            <Grid item xs={6}>
-              <img className={classes.image} alt="logo" src={logo} />
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="h5">
-                {userName()}
+    <React.Fragment>
+      <div className={classes.root}>
+        <Paper className={classes.paper}>
+          <Grid container spacing={2}>
+            {/* My profile */}
+            <Grid item xs={12} className={classes.profile}>
+              <Typography variant="h6" style={{ borderBottom: '1px solid #3F51B5' }}>
+                My profile
             </Typography>
             </Grid>
-          </Grid>
-          {/* Follow BTN */}
-          <Grid item xs={6}
-            container
-            direction="row"
-            justify="flex-end"
-            alignItems="center">
-            {displayButton()}
-            <Button variant="outlined" color="secondary" onClick={handleEdit}>
-              Edit
+            {/* Image and Name */}
+            <Grid item xs={6}
+              container
+              direction="row"
+              justify="center"
+              alignItems="center">
+              <Grid item xs={6}>
+                <img className={classes.image} alt="logo" src={logo} />
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="h5">
+                  {userName()}
+                </Typography>
+              </Grid>
+            </Grid>
+            {/* Follow BTN */}
+            <Grid item xs={6}
+              container
+              direction="row"
+              justify="flex-end"
+              alignItems="center">
+              {displayButton()}
+              <Button variant="outlined" color="secondary" onClick={handleEdit}>
+                Edit
             </Button>
-          </Grid>
-          {/* About me head */}
-          <Grid item xs={6} className={classes.about}>
-            <Typography variant="h6">
-              About me:
+            </Grid>
+            {/* About me head */}
+            <Grid item xs={6} className={classes.about}>
+              <Typography variant="h6">
+                About me:
             </Typography>
-          </Grid>
-          {/* Join Date */}
-          <Grid item xs={6}
-            container
-            direction="row"
-            justify="flex-end">
-            <Typography component="span" style={{ fontSize: '0.7rem' }}>
-              Joined: {joinDate()}
-            </Typography>
-          </Grid>
-          {/* About me TEXT */}
-          <Grid item xs={12}>
+            </Grid>
+            {/* Join Date */}
+            <Grid item xs={6}
+              container
+              direction="row"
+              justify="flex-end">
+              <Typography component="span" style={{ fontSize: '0.7rem' }}>
+                Joined: {joinDate()}
+              </Typography>
+            </Grid>
+            {/* About me TEXT */}
+            <Grid item xs={12}>
 
-            {field()}
+              {field()}
 
+            </Grid>
+            {/* Tab */}
+            <FullWidthTabs />
           </Grid>
-          {/* Tab */}
-          <FullWidthTabs />
-        </Grid>
-      </Paper>
-    </div>
+        </Paper>
+      </div>
+    </React.Fragment>
   )
 }
