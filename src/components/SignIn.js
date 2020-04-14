@@ -13,7 +13,7 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter, Redirect } from "react-router";
-import app from "../config/base";
+import { app } from "../config/base";
 import { AuthContext } from "../config/Auth";
 
 
@@ -58,6 +58,7 @@ const SignIn = ({ history }) => {
   const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
+    // console.log(currentUser.metadata.creationTime)
     return <Redirect to="/" />;
   }
 
@@ -110,7 +111,7 @@ const SignIn = ({ history }) => {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

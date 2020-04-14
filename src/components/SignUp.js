@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Avatar,
   Button,
@@ -12,7 +12,8 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
-import app from "../config/base";
+import { app } from "../config/base";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,13 +37,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignUp = ({ history }) => {
+
+  const [firstName, setFirstName] = useState('');
+
+  const handleSetName = () => {
+    app
+    .firestore()
+    .collection('user')
+    .doc(`${firstName}`)
+    .set({
+      name: firstName,
+    })
+  }
+
   const handleSignUp = useCallback(async event => {
     event.preventDefault();
-    const { email, password } = event.target.elements;
+    const { email, password, firstName } = event.target.elements;
     try {
       await app
         .auth()
-        .createUserWithEmailAndPassword(email.value, password.value);
+        .createUserWithEmailAndPassword(email.value, password.value)
+        .then(result=>{
+          return result.user.updateProfile({
+            displayName: firstName.value
+          })
+        });
       history.push("/");
     } catch (error) {
       alert(error);
@@ -61,9 +80,9 @@ const SignUp = ({ history }) => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSignUp}>
+        <form className={classes.form} noValidate onSubmit={handleSignUp} >
           <Grid container spacing={2}>
-            {/* <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 autoComplete="fname"
                 name="firstName"
@@ -71,21 +90,11 @@ const SignUp = ({ history }) => {
                 required
                 fullWidth
                 id="firstName"
-                label="First Name"
+                label="Your Name"
                 autoFocus
+                onChange={e => setFirstName(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -116,6 +125,7 @@ const SignUp = ({ history }) => {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleSetName}
           >
             Sign Up
           </Button>

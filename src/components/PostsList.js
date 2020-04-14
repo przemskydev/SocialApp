@@ -1,7 +1,9 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import Post from './Post'
+import NoPostInfo from './NoPostInfo'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
+import { app } from "../config/base";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,11 +18,60 @@ const useStyles = makeStyles((theme) => ({
 export default function PostsList() {
   const classes = useStyles();
 
+  const [post, setPostList] = useState(null);
+
+  useEffect(() => {
+    listenForPosts()
+  }, [])
+
+  const listenForPosts = () => {
+    app
+      .firestore()
+      .collection('status')
+      .onSnapshot(snapshot => {
+        const allPosts = []
+        snapshot.forEach(doc => allPosts.push(doc.data()));
+        setPostList(allPosts)
+      }, (error) => console.error(error));
+  }
+
+  if (!post) {
+    return (
+      <>
+        <NoPostInfo
+          context='There is no post'
+        />
+      </>
+    )
+  }
+
+  const renderPostList = () => {
+    if (!post.length) {
+      return (
+        <>
+          <NoPostInfo
+            context='There is no post yet'
+          />
+        </>
+      )
+    }
+
+    return post.map(({ author, context, time }, index) => (
+      <Post
+        key={index}
+        author={author}
+        context={context}
+        time={time}
+      />
+    )).reverse()
+  }
+
   return (
     <React.Fragment>
       <Typography component="div" className={classes.root}>
-        {/* <Post />
-        <Post /> */}
+        {
+          renderPostList()
+        }
       </Typography>
     </React.Fragment>
   )

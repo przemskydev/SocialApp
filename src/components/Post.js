@@ -39,13 +39,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function Post() {
+export default function Post(props) {
   const classes = useStyles();
-  let avatar = 'P';
-  let author = "Pszemsky";
-  let postContent = `This impressive paella is a perfect party dish and a fun meal to cook together with your
-  guests. Add 1 cup of frozen peas along with the mussels, if you like.`;
-  let commentContent = 'comment'
+  const author = props.author;
+  const avatar = author.charAt(0);
+  const postContent = props.context;
+  const time = props.time;
+  const commentContent = 'comment'
 
   return (
     <div className={classes.root}>
@@ -63,6 +63,7 @@ export default function Post() {
                 </Avatar>
               }
               title={author}
+              subheader={time}
             />
           </Grid>
           {/* post content */}
@@ -111,7 +112,7 @@ export default function Post() {
             </CardActions>
           </Grid>
           {/* comments- if they are */}
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Grid container justify="center">
               <Card className={classes.comment}>
                 <CardHeader
@@ -129,7 +130,7 @@ export default function Post() {
                 </CardContent>
               </Card>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Card>
       </Grid>
     </div>
