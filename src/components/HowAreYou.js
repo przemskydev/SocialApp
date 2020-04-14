@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   TextField,
@@ -61,6 +61,43 @@ const setAvatar = (name) => {
 export default function HowAreYou() {
   const classes = useStyles();
 
+  const [statusValue, setStatus] = useState('')
+
+  const handleSetStatusValue = (e) => {
+    setStatus(e.target.value)
+  }
+
+  const handleStatus = () => {
+
+    const timestamp = Date.now();
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = `${date.getDate() < 10 ? ('0' + date.getDate()) : date.getDate()}`;
+    const hours = `${date.getHours() < 10 ? ('0' + date.getHours()) : date.getHours()}`;
+    const minutes = `${date.getMinutes() < 10 ? ('0' + date.getMinutes()) : date.getMinutes()}`;
+    const sec = `${date.getSeconds() < 10 ? ('0' + date.getSeconds()) : date.getSeconds()}`;
+    const time = `${hours}:${minutes}:${sec} ${day}/${(month < 10) ? ('0' + month) : month}/${year}`
+
+    const userName = setName();
+
+    // console.log(userName, statusValue);
+    // console.log(time)
+
+    app
+      .firestore()
+      .collection('status')
+      .doc(`${hours}:${minutes}:${sec} ${userName}`)
+      .set({
+        author: userName,
+        context: statusValue,
+        time: time
+      }, { merge: true })
+
+    setStatus('')
+
+  }
+
   return (
     <Grid
       container
@@ -83,12 +120,19 @@ export default function HowAreYou() {
           placeholder="Say something nice"
           multiline
           variant="outlined"
+          value={statusValue}
+          onChange={handleSetStatusValue}
         />
         <CardActions disableSpacing>
           <IconButton color="primary" aria-label="upload picture" component="span">
             <PhotoCamera />
           </IconButton>
-          <Button variant="outlined" color="primary" style={{ marginLeft: 'auto' }}>
+          <Button
+            variant="outlined"
+            color="primary"
+            style={{ marginLeft: 'auto' }}
+            onClick={handleStatus}
+          >
             SHARE
           </Button>
         </CardActions>
