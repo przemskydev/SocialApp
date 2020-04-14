@@ -110,7 +110,7 @@ export default function Post(props) {
             </CardActions>
           </Grid>
           {/* comments- if they are */}
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Grid container justify="center">
               <Card className={classes.comment}>
                 <CardHeader
@@ -128,7 +128,7 @@ export default function Post(props) {
                 </CardContent>
               </Card>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Card>
       </Grid>
     </div>

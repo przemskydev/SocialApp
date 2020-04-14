@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Post from './Post'
+import NoPostInfo from './NoPostInfo'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { app } from "../config/base";
@@ -35,10 +36,12 @@ export default function PostsList() {
   }
   console.log(post)
 
-  if(!post){
+  if (!post) {
     return (
       <>
-        There is no post
+        <NoPostInfo
+          context='There is no post'
+        />
       </>
     )
   }
@@ -48,7 +51,9 @@ export default function PostsList() {
     if (!post.length) {
       return (
         <>
-          There is no post yet
+          <NoPostInfo
+            context='There is no post yet'
+          />
         </>
       )
     }
