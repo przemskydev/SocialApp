@@ -41,10 +41,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Post(props) {
   const classes = useStyles();
-  let author = props.author;
-  let avatar = author.charAt(0);
-  let postContent = props.context;
-  let commentContent = 'comment'
+  const author = props.author;
+  const avatar = author.charAt(0);
+  const postContent = props.context;
+  const time = props.time;
+  const commentContent = 'comment'
 
   return (
     <div className={classes.root}>
@@ -62,6 +63,7 @@ export default function Post(props) {
                 </Avatar>
               }
               title={author}
+              subheader={time}
             />
           </Grid>
           {/* post content */}

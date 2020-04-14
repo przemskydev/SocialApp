@@ -34,7 +34,6 @@ export default function PostsList() {
         setPostList(allPosts)
       }, (error) => console.error(error));
   }
-  console.log(post)
 
   if (!post) {
     return (
@@ -47,7 +46,6 @@ export default function PostsList() {
   }
 
   const renderPostList = () => {
-    console.log(post)
     if (!post.length) {
       return (
         <>
@@ -65,7 +63,7 @@ export default function PostsList() {
         context={context}
         time={time}
       />
-    ))
+    )).reverse()
   }
 
   return (
