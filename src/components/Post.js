@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Comment from '../components/Comment'
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -37,6 +38,16 @@ const useStyles = makeStyles((theme) => ({
   commentBar: {
     width: '-webkit-fill-available',
     margin: '1rem auto '
+  },
+  counter: {
+    fontSize: '0.6rem',
+    position: 'relative',
+    top: '-10px',
+    right: '20px',
+    padding: '5px 8px',
+    borderRadius: '50%',
+    background: '#818181',
+    color: 'white'
   }
 }))
 
@@ -48,15 +59,14 @@ const setCommentAuthorName = () => {
 }
 
 export default function Post(props) {
+  const classes = useStyles();
   // const
   const ids = props.docsId;
-  const classes = useStyles();
   const author = props.author;
   const avatar = author.charAt(0);
   const postContent = props.context;
   const time = props.time;
   const commnt = props.comment;
-  console.log(commnt)
 
 
   //comment section
@@ -69,7 +79,8 @@ export default function Post(props) {
     // console.log(newComment)
     const commentData = {
       author: commentAuthor,
-      commentContext: commentContext
+      commentContext: commentContext,
+      // time: time
     }
 
     app.firestore().runTransaction(transaction => {
@@ -85,10 +96,23 @@ export default function Post(props) {
         }
       })
     })
-    .then(()=>console.log("Transaction successfully committed!"))
-    .catch((error)=>console.log("Transaction failed: ", error));
+      .then(() => console.log("Transaction successfully committed!"))
+      .catch((error) => console.log("Transaction failed: ", error));
 
     setComment('')
+  }
+
+  const showCommentList = () => {
+    // let ids = Math.floor(100000 + Math.random() * 900000);
+    return (
+      commnt.map(({ author, commentContext }, id) => (
+        <Comment
+          key={id}
+          author={author}
+          commentContext={commentContext}
+        />
+      )).reverse()
+    )
   }
 
   return (
@@ -102,7 +126,7 @@ export default function Post(props) {
           <Grid item xs={12}>
             <CardHeader
               avatar={
-                <Avatar aria-label="recipe" className={classes.avatar}>
+                <Avatar aria-label="recipe">
                   {avatar}
                 </Avatar>
               }
@@ -126,6 +150,13 @@ export default function Post(props) {
             <IconButton >
               <InsertComment style={{ color: '#BDBDBD' }} />
             </IconButton>
+            {
+              (!commnt.length) ? '' : (
+                <Typography variant="body2" component="span" className={classes.counter}>
+                  {commnt.length}
+                </Typography>
+              )
+            }
           </Grid>
           {/* add comment section */}
           <Grid item xs={12}>
@@ -159,25 +190,9 @@ export default function Post(props) {
             </CardActions>
           </Grid>
           {/* comments- if they are */}
-          {/* <Grid item xs={12}>
-            <Grid container justify="center">
-              <Card className={classes.comment}>
-                <CardHeader
-                  avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                      {avatar}
-                    </Avatar>
-                  }
-                  title={author}
-                />
-                <CardContent>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    {commentContent}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid> */}
+          {
+            showCommentList()
+          }
         </Card>
       </Grid>
     </div>
