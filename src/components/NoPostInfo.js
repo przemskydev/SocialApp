@@ -23,7 +23,7 @@ export default function NoPostInfo(props) {
 
   return (
     <div className={classes.root}>
-      <Grid container container
+      <Grid container
         direction="row"
         justify="center"
         alignItems="center">

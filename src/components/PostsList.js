@@ -23,6 +23,7 @@ export default function PostsList() {
   useEffect(() => {
     listenForPosts()
   }, [])
+  // console.log(post)
 
   const listenForPosts = () => {
     app
@@ -56,12 +57,14 @@ export default function PostsList() {
       )
     }
 
-    return post.map(({ author, context, time }, index) => (
+    return post.map(({ id, author, context, time, commentList }) => (
       <Post
-        key={index}
+        key={id}
+        docsId={id}
         author={author}
         context={context}
         time={time}
+        comment={commentList}
       />
     )).reverse()
   }
