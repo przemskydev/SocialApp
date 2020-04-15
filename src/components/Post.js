@@ -55,6 +55,8 @@ export default function Post(props) {
   const avatar = author.charAt(0);
   const postContent = props.context;
   const time = props.time;
+  const commnt = props.comment;
+  console.log(commnt)
 
 
   //comment section
@@ -63,16 +65,32 @@ export default function Post(props) {
   const handleAddComment = () => {
     const commentAuthor = setCommentAuthorName();
     const commentContext = comment;
+    const userRef = app.firestore().collection('status').doc(`${ids}`)
+    // console.log(newComment)
+    const commentData = {
+      author: commentAuthor,
+      commentContext: commentContext
+    }
 
-    console.log(ids, commentAuthor, commentContext)
-    
+    app.firestore().runTransaction(transaction => {
+      return transaction.get(userRef).then(doc => {
+        if (!doc.data().commentList) {
+          transaction.set({
+            commentList: [commentData]
+          })
+        } else {
+          const commentNewList = doc.data().commentList;
+          commentNewList.push(commentData);
+          transaction.update(userRef, { commentList: commentNewList })
+        }
+      })
+    })
+    .then(()=>console.log("Transaction successfully committed!"))
+    .catch((error)=>console.log("Transaction failed: ", error));
+
     setComment('')
   }
 
-  // const comment = props.comment;
-  // if(comment){
-  //   console.log(comment)
-  // }
   return (
     <div className={classes.root}>
       <Grid container
