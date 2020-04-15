@@ -58,6 +58,10 @@ const setAvatar = (name) => {
   return avatar
 }
 
+const setId = () => {
+  return Date.now()
+}
+
 export default function HowAreYou() {
   const classes = useStyles();
 
@@ -78,20 +82,28 @@ export default function HowAreYou() {
     const minutes = `${date.getMinutes() < 10 ? ('0' + date.getMinutes()) : date.getMinutes()}`;
     const sec = `${date.getSeconds() < 10 ? ('0' + date.getSeconds()) : date.getSeconds()}`;
     const time = `${hours}:${minutes}:${sec} ${day}/${(month < 10) ? ('0' + month) : month}/${year}`
-
     const userName = setName();
-
+    const id = setId()
     // console.log(userName, statusValue);
     // console.log(time)
 
     app
       .firestore()
       .collection('status')
-      .doc(`${hours}:${minutes}:${sec} ${userName}`)
+      .doc(`${id}`)
       .set({
+        id: id,
         author: userName,
         context: statusValue,
-        time: time
+        time: time,
+        comment: {
+          commentList: [
+            {
+              author: '',
+              commentContext: ''
+            }
+          ]
+        }
       }, { merge: true })
 
     setStatus('')

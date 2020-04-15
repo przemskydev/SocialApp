@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -16,6 +16,7 @@ import {
   IconButton
 } from '@material-ui/core';
 import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
+import { app } from "../config/base";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,17 +40,42 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+const setCommentAuthorName = () => {
+  const user = app.auth().currentUser;
+  const name = user.displayName;
+
+  return name
+}
+
 export default function Post(props) {
+  // const
+  const ids = props.docsId;
   const classes = useStyles();
   const author = props.author;
   const avatar = author.charAt(0);
   const postContent = props.context;
   const time = props.time;
-  const commentContent = 'comment'
 
+
+  //comment section
+  const [comment, setComment] = useState('');
+
+  const handleAddComment = () => {
+    const commentAuthor = setCommentAuthorName();
+    const commentContext = comment;
+
+    console.log(ids, commentAuthor, commentContext)
+    
+    setComment('')
+  }
+
+  // const comment = props.comment;
+  // if(comment){
+  //   console.log(comment)
+  // }
   return (
     <div className={classes.root}>
-      <Grid container container
+      <Grid container
         direction="row"
         justify="center"
         alignItems="center">
@@ -100,10 +126,13 @@ export default function Post(props) {
                       placeholder="Stop hate!"
                       multiline
                       variant="outlined"
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
                     />
                     <Button
                       variant="outlined"
-                      color="primary">
+                      color="primary"
+                      onClick={handleAddComment}>
                       Add
                     </Button>
                   </Typography>
