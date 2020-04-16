@@ -8,23 +8,7 @@ import { app } from "../../config/base";
 import { useParams } from 'react-router-dom';
 
 
-const displayButton = () => {
-  const userId = app.auth().currentUser.uid
 
-  if (userId === userId) {
-    return (
-      <Button variant="outlined" color="primary" disabled>
-        Follow
-      </Button>
-    )
-  } else {
-    return (
-      <Button variant="outlined" color="primary">
-        Follow
-      </Button>
-    )
-  }
-}
 
 const userName = () => {
   const myName = app.auth().currentUser.displayName;
@@ -60,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProfileCard() {
-  let {id} = useParams()
+  let { id } = useParams()
 
   const classes = useStyles();
   const [about, setAbout] = useState('Click to edit');
@@ -97,6 +81,34 @@ export default function ProfileCard() {
     }
   }
 
+  const displayButton = (id) => {
+    const currentUser = app.auth().currentUser.displayName
+    const user = id
+
+    if (currentUser === user) {
+      return (
+        <>
+          <Button variant="outlined" color="primary" disabled>
+            Follow
+          </Button>
+          <Button variant="outlined" color="secondary" onClick={handleEdit}>
+            Edit
+          </Button>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <Button variant="outlined" color="primary">
+            Follow
+          </Button>
+          <Button variant="outlined">
+            DM
+          </Button>
+        </>
+      )
+    }
+  }
 
   return (
     <React.Fragment>
@@ -130,11 +142,12 @@ export default function ProfileCard() {
               container
               direction="row"
               justify="flex-end"
-              alignItems="center">
-              {displayButton()}
-              <Button variant="outlined" color="secondary" onClick={handleEdit}>
-                Edit
-            </Button>
+              alignItems="center"
+            >
+              {
+                displayButton(id)
+              }
+
             </Grid>
             {/* About me head */}
             <Grid item xs={6} className={classes.about}>
