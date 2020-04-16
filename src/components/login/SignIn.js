@@ -6,7 +6,6 @@ import {
   TextField,
   Link,
   Grid,
-  Box,
   Container,
   Typography
 } from '@material-ui/core';

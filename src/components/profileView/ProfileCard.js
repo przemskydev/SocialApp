@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FullWidthTabs from './ProfileTab';
 import { Grid, Paper, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,13 +7,6 @@ import logo from '../../assets/img/1ok.jpg'
 import { app } from "../../config/base";
 import { useParams } from 'react-router-dom';
 
-
-
-
-const userName = () => {
-  const myName = app.auth().currentUser.displayName;
-  return myName;
-}
 
 const joinDate = () => {
   const joinDate = app.auth().currentUser.metadata.creationTime;
@@ -45,10 +38,36 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProfileCard() {
   let { id } = useParams()
-
   const classes = useStyles();
-  const [about, setAbout] = useState('Click to edit');
+
+  const [about, setAbout] = useState(() => {
+    app.firestore()
+      .collection('user')
+      .doc(`${id}`)
+      .get()
+      .then(doc => {
+        setAbout(doc.data().aboutme)
+      })
+      .catch(err => console.errror(err))
+  });
   const [edit, setEdit] = useState(false)
+
+  useEffect(() => {
+    aboutMeEdit()
+  })
+
+  const aboutMeEdit = () => {
+    if (about) {
+      app.firestore()
+        .collection('user')
+        .doc(`${id}`)
+        .update({
+          aboutme: about
+        })
+    } else {
+      
+    }
+  }
 
   const handleEdit = () => {
     setEdit(!edit)
@@ -66,7 +85,7 @@ export default function ProfileCard() {
           style={{ padding: '1.5rem' }
           }
         >
-          {about}
+          {about ? about : 'Loading...'}
         </Typography >
       )
     } else {
@@ -92,7 +111,7 @@ export default function ProfileCard() {
             Follow
           </Button>
           <Button variant="outlined" color="secondary" onClick={handleEdit}>
-            Edit
+            {edit ? 'SAVE' : 'EDIT'}
           </Button>
         </>
       )

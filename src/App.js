@@ -21,7 +21,6 @@ function App() {
           <Route exact path='/login' component={SignIn} />
           <Route exact path='/signup' component={SignUp} />
           <Route path='/profile/:id' component={ProfileView} />
-          {/* <Route path='/userprofile/:id' component={UserProfile}/> */}
         </>
       </Router>
     </AuthProvider>
