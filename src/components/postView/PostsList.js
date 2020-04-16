@@ -3,7 +3,7 @@ import Post from './Post'
 import NoPostInfo from './NoPostInfo'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import { app } from "../config/base";
+import { app } from "../../config/base";
 
 const useStyles = makeStyles((theme) => ({
   root: {

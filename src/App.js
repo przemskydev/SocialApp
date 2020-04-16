@@ -1,8 +1,8 @@
 import React from 'react';
-import { Main } from './components/Main';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
-import { ProfileView } from './components/ProfileView';
+import { Main } from './components/mainView/Main';
+import SignIn from './components/login/SignIn';
+import SignUp from './components/login/SignUp';
+import { ProfileView } from './components/profileView/ProfileView';
 import {
   BrowserRouter as Router,
   Route

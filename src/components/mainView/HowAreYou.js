@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import { app } from "../config/base";
+import { app } from "../../config/base";
 
 const randomColor = () => {
   let color = '';

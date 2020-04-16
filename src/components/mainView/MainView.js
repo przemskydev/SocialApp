@@ -1,6 +1,6 @@
 import * as React from 'react'
 import HowAreYou from './HowAreYou';
-import PostsList from './PostsList'
+import PostsList from '../postView/PostsList'
 
 
 export default function MainView() {

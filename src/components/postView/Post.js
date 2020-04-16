@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Comment from '../components/Comment'
+import Comment from './Comment'
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -17,7 +17,7 @@ import {
   IconButton
 } from '@material-ui/core';
 import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
-import { app } from "../config/base";
+import { app } from "../../config/base";
 import { Link } from 'react-router-dom'
 
 

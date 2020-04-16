@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ButtonAppBar from './ButtonAppBar';
+import ButtonAppBar from '../mainView/ButtonAppBar';
 import { Typography, Container } from '@material-ui/core';
 import ProfileCard from './ProfileCard';
 

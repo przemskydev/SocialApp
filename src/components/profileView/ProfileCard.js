@@ -3,8 +3,8 @@ import { useState } from 'react';
 import FullWidthTabs from './ProfileTab';
 import { Grid, Paper, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import logo from '../assets/img/1ok.jpg'
-import { app } from "../config/base";
+import logo from '../../assets/img/1ok.jpg'
+import { app } from "../../config/base";
 import { useParams } from 'react-router-dom';
 
 
