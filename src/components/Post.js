@@ -18,9 +18,10 @@ import {
 } from '@material-ui/core';
 import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
 import { app } from "../config/base";
+import { Link } from 'react-router-dom'
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
   },
@@ -115,6 +116,7 @@ export default function Post(props) {
     )
   }
 
+  const userProfile = `/profile/${author}`
   return (
     <div className={classes.root}>
       <Grid container
@@ -130,7 +132,16 @@ export default function Post(props) {
                   {avatar}
                 </Avatar>
               }
-              title={author}
+              title={
+                <Link
+                  to={userProfile}
+                  style={{
+                    textDecoration: 'none',
+                    color: '#757575'
+                  }}>
+                  {author}
+                </Link>
+              }
               subheader={time}
             />
           </Grid>

@@ -5,6 +5,8 @@ import { Grid, Paper, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../assets/img/1ok.jpg'
 import { app } from "../config/base";
+import { useParams } from 'react-router-dom';
+
 
 const displayButton = () => {
   const userId = app.auth().currentUser.uid
@@ -25,8 +27,8 @@ const displayButton = () => {
 }
 
 const userName = () => {
-  const userName = app.auth().currentUser.displayName;
-  return userName;
+  const myName = app.auth().currentUser.displayName;
+  return myName;
 }
 
 const joinDate = () => {
@@ -58,6 +60,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProfileCard() {
+  let {id} = useParams()
+
   const classes = useStyles();
   const [about, setAbout] = useState('Click to edit');
   const [edit, setEdit] = useState(false)
@@ -116,7 +120,8 @@ export default function ProfileCard() {
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="h5">
-                  {userName()}
+                  {/* {userName()} */}
+                  {id}
                 </Typography>
               </Grid>
             </Grid>
