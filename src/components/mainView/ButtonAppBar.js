@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import { app } from "../config/base";
+import { app } from "../../config/base";
 import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
@@ -20,6 +20,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+const showName = () => {
+  const user = app.auth().currentUser;
+  const name = user.displayName
+  const link = `/profile/${name}`
+
+  return link
+}
+
 export default function ButtonAppBar() {
   const classes = useStyles();
 
@@ -27,8 +36,10 @@ export default function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar position="fixed">
         <Toolbar>
+
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           </IconButton>
+
           <Typography variant="h6" className={classes.title}>
             <Link
               to='/'
@@ -39,8 +50,18 @@ export default function ButtonAppBar() {
               9Social
             </Link>
           </Typography>
-          <Button href='/profile' color="inherit">My Profile</Button>
+
+          <Link
+            to={showName()}
+            style={{
+              textDecoration: 'none',
+              color: 'white'
+            }}>
+            <Button color="inherit">My Profile</Button>
+          </Link>
+
           <Button color="inherit" onClick={() => app.auth().signOut()}>Log Out</Button>
+
         </Toolbar>
       </AppBar>
     </div>

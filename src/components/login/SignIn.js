@@ -13,8 +13,8 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter, Redirect } from "react-router";
-import { app } from "../config/base";
-import { AuthContext } from "../config/Auth";
+import { app } from "../../config/base";
+import { AuthContext } from "../../config/Auth";
 
 
 const useStyles = makeStyles((theme) => ({
