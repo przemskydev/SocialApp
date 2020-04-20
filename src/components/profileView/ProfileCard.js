@@ -40,6 +40,9 @@ export default function ProfileCard() {
   let { id } = useParams()
   const classes = useStyles();
 
+  // console.log(app.auth().currentUser.displayName);
+  // console.log(id);
+
   const [about, setAbout] = useState(() => {
     app.firestore()
       .collection('user')
@@ -65,7 +68,7 @@ export default function ProfileCard() {
           aboutme: about
         })
     } else {
-      
+
     }
   }
 
@@ -132,20 +135,46 @@ export default function ProfileCard() {
   const follow = () => {
     const userRef = app.firestore().collection('user').doc(`${id}`);
     const currentUser = app.auth().currentUser.displayName;
+    const followerData = currentUser;
 
-    const  followerData = currentUser;
-
-    app.firestore().runTransaction(trans=>{
-      return trans.get(userRef).then(doc=>{
-        if(!doc.data().followers){
+    app.firestore().runTransaction(trans => {
+      return trans.get(userRef).then(doc => {
+        if (!doc.data().followers) {
           trans.set({
             followers: followerData
           })
-          console.log(`! doc data followers`)
         } else {
           const newFollowersList = doc.data().followers;
           newFollowersList.push(followerData);
-          trans.update(userRef, {followers: newFollowersList})
+          trans.update(userRef, { followers: newFollowersList })
+        }
+      })
+    })
+
+    setFollowingProfile(currentUser, id)
+  }
+
+  const setFollowingProfile = (currentUser, follower) => {
+    const userLogged = currentUser;
+    const userToFollow = follower;
+    const userRef = app.firestore().collection('user').doc(`${userLogged}`);
+
+    console.log(`Watched profile to follow ${userToFollow}`)
+    console.log(`${userLogged} Logged in`)
+    console.log(userRef)
+
+    app.firestore().runTransaction(trans => {
+      return trans.get(userRef).then(doc => {
+        if (!doc.data().following) {
+          trans.set({
+            following: userToFollow
+          })
+          console.log(doc.data().following)
+        } else {
+          const newFollowersList = doc.data().following;
+          newFollowersList.push(userToFollow);
+          console.log(newFollowersList)
+          trans.update(userRef, { following: newFollowersList })
         }
       })
     })

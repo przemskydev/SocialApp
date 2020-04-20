@@ -22,15 +22,16 @@ const useStyles = makeStyles((theme) => ({
 
 
 const showName = () => {
-  const user = app.auth().currentUser;
-  const name = user.displayName
-  const link = `/profile/${name}`
+  const user = app.auth().currentUser.displayName;
+  const link = `/profile/${user}`
 
   return link
 }
 
 export default function ButtonAppBar() {
   const classes = useStyles();
+  const user = app.auth().currentUser.displayName;
+  const link = `/profile/${user}`
 
   return (
     <div className={classes.root}>
@@ -52,7 +53,7 @@ export default function ButtonAppBar() {
           </Typography>
 
           <Link
-            to={showName()}
+            to={link}
             style={{
               textDecoration: 'none',
               color: 'white'
@@ -60,7 +61,7 @@ export default function ButtonAppBar() {
             <Button color="inherit">My Profile</Button>
           </Link>
 
-          <Button color="inherit" onClick={() => app.auth().signOut()}>Log Out</Button>
+          <Button color="inherit" onClick={() => app.auth().signOut()}>Log Out {user}</Button>
 
         </Toolbar>
       </AppBar>

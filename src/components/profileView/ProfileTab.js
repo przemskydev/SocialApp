@@ -56,6 +56,7 @@ export default function FullWidthTabs() {
   const [value, setValue] = useState(0);
   const [myFollowersList, setFollowers] = useState(null)
   const [myStatusList, setMyStatus] = useState(null)
+  const [followingers, setFollowingers] = useState(null)
   // console.log(myStatusList)
   useEffect(() => {
     followersList()
@@ -63,6 +64,10 @@ export default function FullWidthTabs() {
 
   useEffect(() => {
     statusList()
+  }, [])
+
+  useEffect(()=>{
+    followingPeople()
   }, [])
 
   const handleChange = (event, newValue) => {
@@ -84,7 +89,7 @@ export default function FullWidthTabs() {
       })
   }
 
-  const statusList = () => (
+  const statusList = () => {
     app
       .firestore()
       .collection('status')
@@ -94,7 +99,19 @@ export default function FullWidthTabs() {
         snap.forEach(doc => myPost.push(doc.data()))
         setMyStatus(myPost)
       })
-  )
+  }
+
+  const followingPeople = () => {
+    app
+      .firestore()
+      .collection('user')
+      .doc(`${id}`)
+      .onSnapshot(snap => {
+        const following = (snap.data().following)
+        setFollowingers(following)
+      })
+  }
+
 
   const userPosts = () => {
     return (
@@ -125,7 +142,13 @@ export default function FullWidthTabs() {
 
   const myFollowing = () => {
     return (
-      (false) ? (`People who i follow`) : (`Dont have FOLLOWING`)
+      (followingers) ? (
+        followingers.map(fling=>{
+          return(
+          <li>{fling}</li>
+          )
+        })
+      ) : (`Dont have FOLLOWING`)
     )
   }
 
@@ -166,9 +189,11 @@ export default function FullWidthTabs() {
           </ul>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          {
-            // myFollowing()
-          }
+          <ul>
+            {
+              myFollowing()
+            }
+          </ul>
         </TabPanel>
       </SwipeableViews>
     </div>
