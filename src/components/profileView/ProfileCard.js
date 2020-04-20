@@ -118,7 +118,7 @@ export default function ProfileCard() {
     } else {
       return (
         <>
-          <Button variant="outlined" color="primary">
+          <Button variant="outlined" color="primary" onClick={follow}>
             Follow
           </Button>
           <Button variant="outlined">
@@ -127,6 +127,28 @@ export default function ProfileCard() {
         </>
       )
     }
+  }
+
+  const follow = () => {
+    const userRef = app.firestore().collection('user').doc(`${id}`);
+    const currentUser = app.auth().currentUser.displayName;
+
+    const  followerData = currentUser;
+
+    app.firestore().runTransaction(trans=>{
+      return trans.get(userRef).then(doc=>{
+        if(!doc.data().followers){
+          trans.set({
+            followers: followerData
+          })
+          console.log(`! doc data followers`)
+        } else {
+          const newFollowersList = doc.data().followers;
+          newFollowersList.push(followerData);
+          trans.update(userRef, {followers: newFollowersList})
+        }
+      })
+    })
   }
 
   return (
