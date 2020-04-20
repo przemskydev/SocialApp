@@ -14,7 +14,8 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   TextField,
-  IconButton
+  IconButton,
+  Badge
 } from '@material-ui/core';
 import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
 import { app } from "../../config/base";
@@ -117,6 +118,7 @@ export default function Post(props) {
   }
 
   const userProfile = `/profile/${author}`
+
   return (
     <div className={classes.root}>
       <Grid container
@@ -155,9 +157,11 @@ export default function Post(props) {
           </Grid>
           {/* like buttons */}
           <Grid item xs={12} style={{ marginLeft: '1rem' }}>
+
             <IconButton >
               <FavoriteBorderOutlined style={{ color: '#BDBDBD' }} />
             </IconButton>
+
             <IconButton >
               <InsertComment style={{ color: '#BDBDBD' }} />
             </IconButton>

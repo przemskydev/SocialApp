@@ -9,6 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { app } from "../../config/base";
 import { useParams } from 'react-router-dom';
+import FollowerView from './followersView/Follower'
+import UserPostView from './followersView/UserPostView'
+import { List } from '@material-ui/core';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,7 +69,7 @@ export default function FullWidthTabs() {
     statusList()
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     followingPeople()
   }, [])
 
@@ -118,9 +121,10 @@ export default function FullWidthTabs() {
       (myStatusList) ? (
         myStatusList.map(status => {
           return (
-            <li>
-              {status.author}: {status.context}
-            </li>
+            // <li>
+            //   {status.author}: {status.context}
+            // </li>
+            <UserPostView {...status}/>
           )
         }).reverse()
       ) : (`Dont have posts yet`)
@@ -132,7 +136,7 @@ export default function FullWidthTabs() {
       (myFollowersList) ? (
         myFollowersList.map(follower => {
           return (
-            <li>{follower}</li>
+            <FollowerView follower={follower} />
           )
         }
         )
@@ -143,9 +147,9 @@ export default function FullWidthTabs() {
   const myFollowing = () => {
     return (
       (followingers) ? (
-        followingers.map(fling=>{
-          return(
-          <li>{fling}</li>
+        followingers.map(fling => {
+          return (
+            <FollowerView follower={fling} />
           )
         })
       ) : (`Dont have FOLLOWING`)
@@ -174,27 +178,31 @@ export default function FullWidthTabs() {
         index={value}
         onChangeIndex={handleChangeIndex}
       >
+        {/* posts */}
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <ul>
+          <List>
             {
               userPosts()
             }
-          </ul>
+          </List>
         </TabPanel>
+        {/* follower */}
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <ul>
+          <List>
             {
               userFollowers()
             }
-          </ul>
+          </List>
         </TabPanel>
+        {/* followings */}
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <ul>
+          <List>
             {
               myFollowing()
             }
-          </ul>
+          </List>
         </TabPanel>
+
       </SwipeableViews>
     </div>
   );
