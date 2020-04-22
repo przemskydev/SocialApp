@@ -47,6 +47,8 @@ const SignUp = ({ history }) => {
     .doc(`${firstName}`)
     .set({
       name: firstName,
+      aboutme: 'Click edit button',
+      followers: []
     })
   }
 

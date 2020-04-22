@@ -1,35 +1,11 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FullWidthTabs from './ProfileTab';
 import { Grid, Paper, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import logo from '../../assets/img/1ok.jpg'
+import logo from '../../assets/img/fishok.jpg'
 import { app } from "../../config/base";
 import { useParams } from 'react-router-dom';
-
-
-const displayButton = () => {
-  const userId = app.auth().currentUser.uid
-
-  if (userId === userId) {
-    return (
-      <Button variant="outlined" color="primary" disabled>
-        Follow
-      </Button>
-    )
-  } else {
-    return (
-      <Button variant="outlined" color="primary">
-        Follow
-      </Button>
-    )
-  }
-}
-
-const userName = () => {
-  const myName = app.auth().currentUser.displayName;
-  return myName;
-}
 
 const joinDate = () => {
   const joinDate = app.auth().currentUser.metadata.creationTime;
@@ -45,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     margin: '1rem auto',
-    width: '70vh'
+    width: '70vh',
+    height: '80vh'
   },
   image: {
     width: 80,
@@ -60,11 +37,45 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProfileCard() {
-  let {id} = useParams()
-
+  let { id } = useParams()
   const classes = useStyles();
-  const [about, setAbout] = useState('Click to edit');
+
+  // console.log(app.auth().currentUser.displayName);
+  // console.log(id);
+
+  const [about, setAbout] = useState(() => {
+    app.firestore()
+      .collection('user')
+      .doc(`${id}`)
+      .get()
+      .then(doc => {
+        setAbout(doc.data().aboutme)
+      })
+      .catch(err => console.errror(err))
+  });
   const [edit, setEdit] = useState(false)
+  const [followed, setFollowed] = useState(false)
+
+  useEffect(() => {
+    aboutMeEdit()
+  })
+
+  useEffect(() => {
+    handleDisableBtn()
+  })
+
+  const aboutMeEdit = () => {
+    if (about) {
+      app.firestore()
+        .collection('user')
+        .doc(`${id}`)
+        .update({
+          aboutme: about
+        })
+    } else {
+
+    }
+  }
 
   const handleEdit = () => {
     setEdit(!edit)
@@ -82,7 +93,7 @@ export default function ProfileCard() {
           style={{ padding: '1.5rem' }
           }
         >
-          {about}
+          {about ? about : 'Loading...'}
         </Typography >
       )
     } else {
@@ -97,6 +108,103 @@ export default function ProfileCard() {
     }
   }
 
+  const handleDisableBtn = () => {
+    const current = app.auth().currentUser.displayName;
+
+    app.firestore()
+      .collection('user')
+      .doc(`${id}`)
+      .get()
+      .then(doc => {
+        if ((doc.data().followers.indexOf(current))>-1 ) {
+          document.querySelector('#followBtn').classList.add('Mui-disabled')
+        }
+      }
+      )
+  }
+
+  const displayButton = (id) => {
+    const currentUser = app.auth().currentUser.displayName
+    const user = id
+
+    if (currentUser === user) {
+      return (
+        <>
+          <Button variant="outlined" color="primary" disabled>
+            Follow
+          </Button>
+          <Button variant="outlined" color="secondary" onClick={handleEdit}>
+            {edit ? 'SAVE' : 'EDIT'}
+          </Button>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <Button id='followBtn' variant="outlined" color="primary" onClick={follow}>
+            Follow
+          </Button>
+          <Button id='dm' variant="outlined">
+            DM
+          </Button>
+        </>
+      )
+    }
+  }
+
+  const follow = () => {
+    const userRef = app.firestore().collection('user').doc(`${id}`);
+    const currentUser = app.auth().currentUser.displayName;
+    const followerData = currentUser;
+
+    app.firestore().runTransaction(trans => {
+      return trans.get(userRef).then(doc => {
+        if (!doc.data().followers) {
+          trans.set({
+            followers: followerData
+          })
+
+        } else {
+          const newFollowersList = doc.data().followers;
+          newFollowersList.push(followerData);
+          trans.update(userRef, { followers: newFollowersList })
+
+          if (newFollowersList.indexOf(followerData)) {
+            document.querySelector('#followBtn').classList.add('Mui-disabled')
+
+          }
+
+        }
+      })
+    })
+
+    setFollowingProfile(currentUser, id)
+
+
+  }
+
+  const setFollowingProfile = (currentUser, follower) => {
+    const userLogged = currentUser;
+    const userToFollow = follower;
+    const userRef = app.firestore().collection('user').doc(`${userLogged}`);
+
+    console.log(`Watched profile to follow ${userToFollow}`)
+    console.log(`${userLogged} Logged in`)
+
+    app.firestore().runTransaction(trans => {
+      return trans.get(userRef).then(doc => {
+        if (!doc.data().following) {
+          trans.set({
+            following: userToFollow
+          })
+        } else {
+          const newFollowersList = doc.data().following;
+          newFollowersList.push(userToFollow);
+          trans.update(userRef, { following: newFollowersList })
+        }
+      })
+    })
+  }
 
   return (
     <React.Fragment>
@@ -130,11 +238,12 @@ export default function ProfileCard() {
               container
               direction="row"
               justify="flex-end"
-              alignItems="center">
-              {displayButton()}
-              <Button variant="outlined" color="secondary" onClick={handleEdit}>
-                Edit
-            </Button>
+              alignItems="center"
+            >
+              {
+                displayButton(id)
+              }
+
             </Grid>
             {/* About me head */}
             <Grid item xs={6} className={classes.about}>

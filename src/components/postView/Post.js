@@ -49,6 +49,10 @@ const useStyles = makeStyles(() => ({
     borderRadius: '50%',
     background: '#818181',
     color: 'white'
+  },
+  commentSection: {
+    maxHeight: '55vh',
+    overflowY: 'auto'
   }
 }))
 
@@ -104,7 +108,6 @@ export default function Post(props) {
   }
 
   const showCommentList = () => {
-    // let ids = Math.floor(100000 + Math.random() * 900000);
     return (
       commnt.map(({ author, commentContext }, id) => (
         <Comment
@@ -117,6 +120,7 @@ export default function Post(props) {
   }
 
   const userProfile = `/profile/${author}`
+
   return (
     <div className={classes.root}>
       <Grid container
@@ -155,9 +159,11 @@ export default function Post(props) {
           </Grid>
           {/* like buttons */}
           <Grid item xs={12} style={{ marginLeft: '1rem' }}>
+
             <IconButton >
               <FavoriteBorderOutlined style={{ color: '#BDBDBD' }} />
             </IconButton>
+
             <IconButton >
               <InsertComment style={{ color: '#BDBDBD' }} />
             </IconButton>
@@ -201,9 +207,11 @@ export default function Post(props) {
             </CardActions>
           </Grid>
           {/* comments- if they are */}
-          {
-            showCommentList()
-          }
+          <Typography component="div" className={classes.commentSection}>
+            {
+              showCommentList()
+            }
+          </Typography>
         </Card>
       </Grid>
     </div>

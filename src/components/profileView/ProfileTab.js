@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -7,6 +7,11 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { app } from "../../config/base";
+import { useParams } from 'react-router-dom';
+import FollowerView from './followersView/Follower'
+import UserPostView from './followersView/UserPostView'
+import { List } from '@material-ui/core';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,7 +53,25 @@ const useStyles = makeStyles((theme) => ({
 export default function FullWidthTabs() {
   const classes = useStyles();
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  let { id } = useParams()
+
+
+  const [value, setValue] = useState(0);
+  const [myFollowersList, setFollowers] = useState(null)
+  const [myStatusList, setMyStatus] = useState(null)
+  const [followingers, setFollowingers] = useState(null)
+  // console.log(myStatusList)
+  useEffect(() => {
+    followersList()
+  }, [])
+
+  useEffect(() => {
+    statusList()
+  }, [])
+
+  useEffect(() => {
+    followingPeople()
+  }, [])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -57,6 +80,78 @@ export default function FullWidthTabs() {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+
+  const followersList = () => {
+    app
+      .firestore()
+      .collection('user')
+      .doc(`${id}`)
+      .onSnapshot(snap => {
+        const followers = (snap.data().followers)
+        setFollowers(followers)
+      })
+  }
+
+  const statusList = () => {
+    app
+      .firestore()
+      .collection('status')
+      .where('author', '==', `${id}`)
+      .onSnapshot(snap => {
+        const myPost = [];
+        snap.forEach(doc => myPost.push(doc.data()))
+        setMyStatus(myPost)
+      })
+  }
+
+  const followingPeople = () => {
+    app
+      .firestore()
+      .collection('user')
+      .doc(`${id}`)
+      .onSnapshot(snap => {
+        const following = (snap.data().following)
+        setFollowingers(following)
+      })
+  }
+
+
+  const userPosts = () => {
+    return (
+      (myStatusList) ? (
+        myStatusList.map(status => {
+          return (
+            <UserPostView key={status.id} {...status}/>
+          )
+        }).reverse()
+      ) : (`Dont have posts yet`)
+    )
+  }
+
+  const userFollowers = () => {
+    return (
+      (myFollowersList) ? (
+        myFollowersList.map(follower => {
+          return (
+            <FollowerView key={follower} follower={follower} />
+          )
+        }
+        )
+      ) : (`Dont have followers`)
+    )
+  }
+
+  const myFollowing = () => {
+    return (
+      (followingers) ? (
+        followingers.map(fling => {
+          return (
+            <FollowerView key={fling} follower={fling} />
+          )
+        })
+      ) : (`Dont have FOLLOWING`)
+    )
+  }
 
   return (
     <div className={classes.root}>
@@ -80,15 +175,31 @@ export default function FullWidthTabs() {
         index={value}
         onChangeIndex={handleChangeIndex}
       >
+        {/* posts */}
         <TabPanel value={value} index={0} dir={theme.direction}>
-          Posts
+          <List>
+            {
+              userPosts()
+            }
+          </List>
         </TabPanel>
+        {/* follower */}
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Followers
+          <List>
+            {
+              userFollowers()
+            }
+          </List>
         </TabPanel>
+        {/* followings */}
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Following
+          <List>
+            {
+              myFollowing()
+            }
+          </List>
         </TabPanel>
+
       </SwipeableViews>
     </div>
   );
