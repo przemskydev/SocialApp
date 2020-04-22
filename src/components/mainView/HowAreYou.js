@@ -96,7 +96,8 @@ export default function HowAreYou() {
         author: userName,
         context: statusValue,
         time: time,
-        commentList: []
+        commentList: [],
+        likes: []
       }, { merge: true })
 
     setStatus('')

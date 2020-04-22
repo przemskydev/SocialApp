@@ -19,6 +19,7 @@ import {
 import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
 import { app } from "../../config/base";
 import { Link } from 'react-router-dom'
+// import { useParams } from 'react-router-dom';
 
 
 const useStyles = makeStyles(() => ({
@@ -65,6 +66,8 @@ const setCommentAuthorName = () => {
 
 export default function Post(props) {
   const classes = useStyles();
+  const currentUser = app.auth().currentUser.displayName
+
   // const
   const ids = props.docsId;
   const author = props.author;
@@ -119,6 +122,38 @@ export default function Post(props) {
     )
   }
 
+  const handleLike = () => {
+    console.log(`${ids} ${currentUser} I like it`)
+
+    const userRef = app.firestore().collection('status').doc(`${ids}`);
+
+
+
+    app.firestore().runTransaction(trans => {
+      return trans.get(userRef).then(doc => {
+
+        if (!doc.data().likes) {
+          trans.set({
+            likes: currentUser
+          })
+          // console.log(doc.data().likes)
+        } else {
+          const newLike = doc.data().likes;
+          if ((newLike.indexOf(currentUser)) < 0) {
+            newLike.push(currentUser);
+            trans.update(userRef, { likes: newLike })
+          } else {
+
+          }
+          // newLike.push(currentUser);
+          // trans.update(userRef, { likes: newLike })
+          // console.log(newLike.indexOf(currentUser))
+
+        }
+      })
+    })
+  }
+
   const userProfile = `/profile/${author}`
 
   return (
@@ -160,12 +195,12 @@ export default function Post(props) {
           {/* like buttons */}
           <Grid item xs={12} style={{ marginLeft: '1rem' }}>
 
-            <IconButton >
+            <IconButton id='likeBtn' onClick={handleLike}>
               <FavoriteBorderOutlined style={{ color: '#BDBDBD' }} />
             </IconButton>
 
             <IconButton >
-              <InsertComment style={{ color: '#BDBDBD' }} />
+              <InsertComment id='commentBtn' style={{ color: '#BDBDBD' }} />
             </IconButton>
             {
               (!commnt.length) ? '' : (
