@@ -20,14 +20,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-const showName = () => {
-  const user = app.auth().currentUser.displayName;
-  const link = `/profile/${user}`
-
-  return link
-}
-
 export default function ButtonAppBar() {
   const classes = useStyles();
   const user = app.auth().currentUser.displayName;

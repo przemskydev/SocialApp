@@ -121,10 +121,7 @@ export default function FullWidthTabs() {
       (myStatusList) ? (
         myStatusList.map(status => {
           return (
-            // <li>
-            //   {status.author}: {status.context}
-            // </li>
-            <UserPostView {...status}/>
+            <UserPostView key={status.id} {...status}/>
           )
         }).reverse()
       ) : (`Dont have posts yet`)
@@ -136,7 +133,7 @@ export default function FullWidthTabs() {
       (myFollowersList) ? (
         myFollowersList.map(follower => {
           return (
-            <FollowerView follower={follower} />
+            <FollowerView key={follower} follower={follower} />
           )
         }
         )
@@ -149,7 +146,7 @@ export default function FullWidthTabs() {
       (followingers) ? (
         followingers.map(fling => {
           return (
-            <FollowerView follower={fling} />
+            <FollowerView key={fling} follower={fling} />
           )
         })
       ) : (`Dont have FOLLOWING`)

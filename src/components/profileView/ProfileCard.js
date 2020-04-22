@@ -3,10 +3,9 @@ import { useState, useEffect } from 'react';
 import FullWidthTabs from './ProfileTab';
 import { Grid, Paper, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import logo from '../../assets/img/1ok.jpg'
+import logo from '../../assets/img/fishok.jpg'
 import { app } from "../../config/base";
 import { useParams } from 'react-router-dom';
-
 
 const joinDate = () => {
   const joinDate = app.auth().currentUser.metadata.creationTime;
@@ -22,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     margin: '1rem auto',
-    width: '70vh'
+    width: '70vh',
+    height: '80vh'
   },
   image: {
     width: 80,
@@ -54,9 +54,14 @@ export default function ProfileCard() {
       .catch(err => console.errror(err))
   });
   const [edit, setEdit] = useState(false)
+  const [followed, setFollowed] = useState(false)
 
   useEffect(() => {
     aboutMeEdit()
+  })
+
+  useEffect(() => {
+    handleDisableBtn()
   })
 
   const aboutMeEdit = () => {
@@ -103,6 +108,21 @@ export default function ProfileCard() {
     }
   }
 
+  const handleDisableBtn = () => {
+    const current = app.auth().currentUser.displayName;
+
+    app.firestore()
+      .collection('user')
+      .doc(`${id}`)
+      .get()
+      .then(doc => {
+        if ((doc.data().followers.indexOf(current))>-1 ) {
+          document.querySelector('#followBtn').classList.add('Mui-disabled')
+        }
+      }
+      )
+  }
+
   const displayButton = (id) => {
     const currentUser = app.auth().currentUser.displayName
     const user = id
@@ -121,10 +141,10 @@ export default function ProfileCard() {
     } else {
       return (
         <>
-          <Button variant="outlined" color="primary" onClick={follow}>
+          <Button id='followBtn' variant="outlined" color="primary" onClick={follow}>
             Follow
           </Button>
-          <Button variant="outlined">
+          <Button id='dm' variant="outlined">
             DM
           </Button>
         </>
@@ -143,15 +163,24 @@ export default function ProfileCard() {
           trans.set({
             followers: followerData
           })
+
         } else {
           const newFollowersList = doc.data().followers;
           newFollowersList.push(followerData);
           trans.update(userRef, { followers: newFollowersList })
+
+          if (newFollowersList.indexOf(followerData)) {
+            document.querySelector('#followBtn').classList.add('Mui-disabled')
+
+          }
+
         }
       })
     })
 
     setFollowingProfile(currentUser, id)
+
+
   }
 
   const setFollowingProfile = (currentUser, follower) => {
@@ -161,7 +190,6 @@ export default function ProfileCard() {
 
     console.log(`Watched profile to follow ${userToFollow}`)
     console.log(`${userLogged} Logged in`)
-    console.log(userRef)
 
     app.firestore().runTransaction(trans => {
       return trans.get(userRef).then(doc => {
@@ -169,11 +197,9 @@ export default function ProfileCard() {
           trans.set({
             following: userToFollow
           })
-          console.log(doc.data().following)
         } else {
           const newFollowersList = doc.data().following;
           newFollowersList.push(userToFollow);
-          console.log(newFollowersList)
           trans.update(userRef, { following: newFollowersList })
         }
       })

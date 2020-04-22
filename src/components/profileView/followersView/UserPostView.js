@@ -1,5 +1,4 @@
 import React from 'react'
-import PersonIcon from '@material-ui/icons/Person';
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 import logo from '../../../assets/img/1ok.jpg'
 
@@ -8,7 +7,7 @@ const userPostView = (({author, context}) => {
     <>
       <ListItem button alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt={author} src={logo} />
+          <Avatar alt={author} src={`logo`} />
         </ListItemAvatar>
         <ListItemText
           primary={context}

@@ -14,8 +14,7 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   TextField,
-  IconButton,
-  Badge
+  IconButton
 } from '@material-ui/core';
 import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
 import { app } from "../../config/base";
@@ -50,6 +49,10 @@ const useStyles = makeStyles(() => ({
     borderRadius: '50%',
     background: '#818181',
     color: 'white'
+  },
+  commentSection: {
+    maxHeight: '55vh',
+    overflowY: 'auto'
   }
 }))
 
@@ -105,7 +108,6 @@ export default function Post(props) {
   }
 
   const showCommentList = () => {
-    // let ids = Math.floor(100000 + Math.random() * 900000);
     return (
       commnt.map(({ author, commentContext }, id) => (
         <Comment
@@ -205,9 +207,11 @@ export default function Post(props) {
             </CardActions>
           </Grid>
           {/* comments- if they are */}
-          {
-            showCommentList()
-          }
+          <Typography component="div" className={classes.commentSection}>
+            {
+              showCommentList()
+            }
+          </Typography>
         </Card>
       </Grid>
     </div>
