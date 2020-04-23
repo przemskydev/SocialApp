@@ -54,7 +54,7 @@ export default function ProfileCard() {
       .catch(err => console.errror(err))
   });
   const [edit, setEdit] = useState(false)
-  const [followed, setFollowed] = useState(false)
+  // const [followed, setFollowed] = useState(false)
 
   useEffect(() => {
     aboutMeEdit()

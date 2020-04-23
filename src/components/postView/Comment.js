@@ -27,6 +27,7 @@ export default function Comment(props) {
     <Grid item xs={12}>
       <Grid container justify="center">
         <Card className={classes.comment}>
+
           <CardHeader
             avatar={
               <Avatar aria-label="recipe">
@@ -36,11 +37,16 @@ export default function Comment(props) {
             title={author}
             subheader={time}
           />
+
           <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              component="p">
               {commentContent}
             </Typography>
           </CardContent>
+
         </Card>
       </Grid>
     </Grid>

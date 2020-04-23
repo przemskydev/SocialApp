@@ -19,8 +19,6 @@ import {
 import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
 import { app } from "../../config/base";
 import { Link } from 'react-router-dom'
-// import { useParams } from 'react-router-dom';
-
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -65,31 +63,30 @@ const setCommentAuthorName = () => {
 }
 
 export default function Post(props) {
-  const classes = useStyles();
-  const currentUser = app.auth().currentUser.displayName
+  const classes = useStyles(),
+    currentUser = app.auth().currentUser.displayName;
 
-  // const
-  const ids = props.docsId;
-  const author = props.author;
-  const avatar = author.charAt(0);
-  const postContent = props.context;
-  const time = props.time;
-  const commnt = props.comment;
+  // props const
+  const ids = props.docsId,
+    author = props.author,
+    avatar = author.charAt(0),
+    postContent = props.context,
+    time = props.time,
+    commnt = props.comment;
 
 
   //comment section
   const [comment, setComment] = useState('');
 
   const handleAddComment = () => {
-    const commentAuthor = setCommentAuthorName();
-    const commentContext = comment;
-    const userRef = app.firestore().collection('status').doc(`${ids}`)
-    // console.log(newComment)
-    const commentData = {
-      author: commentAuthor,
-      commentContext: commentContext,
-      // time: time
-    }
+
+    const commentAuthor = setCommentAuthorName(),
+      commentContext = comment,
+      userRef = app.firestore().collection('status').doc(`${ids}`),
+      commentData = {
+        author: commentAuthor,
+        commentContext: commentContext
+      };
 
     app.firestore().runTransaction(transaction => {
       return transaction.get(userRef).then(doc => {
@@ -111,6 +108,7 @@ export default function Post(props) {
   }
 
   const showCommentList = () => {
+
     return (
       commnt.map(({ author, commentContext }, id) => (
         <Comment
@@ -123,11 +121,10 @@ export default function Post(props) {
   }
 
   const handleLike = () => {
+
     console.log(`${ids} ${currentUser} I like it`)
 
     const userRef = app.firestore().collection('status').doc(`${ids}`);
-
-
 
     app.firestore().runTransaction(trans => {
       return trans.get(userRef).then(doc => {
@@ -154,7 +151,7 @@ export default function Post(props) {
     })
   }
 
-  const userProfile = `/profile/${author}`
+  const userProfile = `/profile/${author}`;
 
   return (
     <div className={classes.root}>
@@ -194,11 +191,11 @@ export default function Post(props) {
           </Grid>
           {/* like buttons */}
           <Grid item xs={12} style={{ marginLeft: '1rem' }}>
-
+              {/* like ico */}
             <IconButton id='likeBtn' onClick={handleLike}>
               <FavoriteBorderOutlined style={{ color: '#BDBDBD' }} />
             </IconButton>
-
+              {/* comment ico */}
             <IconButton >
               <InsertComment id='commentBtn' style={{ color: '#BDBDBD' }} />
             </IconButton>

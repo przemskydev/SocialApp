@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { app } from "../../config/base";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     width: 'auto',
@@ -23,7 +23,6 @@ export default function PostsList() {
   useEffect(() => {
     listenForPosts()
   }, [])
-  // console.log(post)
 
   const listenForPosts = () => {
     app

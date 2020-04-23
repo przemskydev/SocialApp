@@ -27,13 +27,20 @@ export default function NoPostInfo(props) {
         direction="row"
         justify="center"
         alignItems="center">
+
         <Card className={classes.paper}>
           <Grid item xs={12}>
+
             <CardContent>
-              <Typography variant="body2" color="textSecondary" component="p" style={{textAlign: 'center'}}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="p"
+                style={{ textAlign: 'center' }}>
                 {postContent}
               </Typography>
             </CardContent>
+
           </Grid>
         </Card>
       </Grid>
