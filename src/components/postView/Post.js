@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Comment from './Comment'
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -120,11 +120,25 @@ export default function Post(props) {
     )
   }
 
+  useEffect(() => {
+    const redHeart = () => {
+      let postList = document.querySelectorAll('#likeBtn')
+      postList.forEach(post =>
+        post.addEventListener('click', (e) => {
+
+          e.target.style.color = 'red'
+
+        }))
+    }
+    return redHeart()
+
+  })
+
+
   const handleLike = () => {
 
-    console.log(`${ids} ${currentUser} I like it`)
-
     const userRef = app.firestore().collection('status').doc(`${ids}`);
+    const docs = document.querySelectorAll('#likeBtn')
 
     app.firestore().runTransaction(trans => {
       return trans.get(userRef).then(doc => {
@@ -133,18 +147,19 @@ export default function Post(props) {
           trans.set({
             likes: currentUser
           })
-          // console.log(doc.data().likes)
+
         } else {
           const newLike = doc.data().likes;
+          console.log(newLike, currentUser)
+
           if ((newLike.indexOf(currentUser)) < 0) {
+
             newLike.push(currentUser);
             trans.update(userRef, { likes: newLike })
-          } else {
 
+          } else {
+            console.log('nope')
           }
-          // newLike.push(currentUser);
-          // trans.update(userRef, { likes: newLike })
-          // console.log(newLike.indexOf(currentUser))
 
         }
       })
@@ -154,7 +169,7 @@ export default function Post(props) {
   const userProfile = `/profile/${author}`;
 
   return (
-    <div className={classes.root}>
+    <div id={ids} className={classes.root}>
       <Grid container
         direction="row"
         justify="center"
@@ -191,13 +206,13 @@ export default function Post(props) {
           </Grid>
           {/* like buttons */}
           <Grid item xs={12} style={{ marginLeft: '1rem' }}>
-              {/* like ico */}
+            {/* like ico */}
             <IconButton id='likeBtn' onClick={handleLike}>
               <FavoriteBorderOutlined style={{ color: '#BDBDBD' }} />
             </IconButton>
-              {/* comment ico */}
+            {/* comment ico */}
             <IconButton >
-              <InsertComment id='commentBtn' style={{ color: '#BDBDBD' }} />
+              <InsertComment style={{ color: '#BDBDBD' }} />
             </IconButton>
             {
               (!commnt.length) ? '' : (

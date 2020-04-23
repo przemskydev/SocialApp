@@ -63,8 +63,7 @@ export default function PostsList() {
         author={author}
         context={context}
         time={time}
-        comment={commentList}
-      />
+        comment={commentList} />
     )).reverse()
   }
 
