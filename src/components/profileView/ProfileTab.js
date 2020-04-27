@@ -127,7 +127,7 @@ export default function FullWidthTabs() {
           }).reverse()
         )
         :
-        (`Dont have posts yet`)
+        (`Don't have posts yet`)
     )
   }
 
