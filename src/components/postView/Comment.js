@@ -12,7 +12,9 @@ import {
 const useStyles = makeStyles(() => ({
   comment: {
     width: '80vh',
-    margin: '1rem 0'
+    margin: '1rem 0',
+    backgroundColor: '#666',
+    color: '#DDD'
   }
 }))
 
@@ -41,7 +43,7 @@ export default function Comment(props) {
           <CardContent>
             <Typography
               variant="body2"
-              color="textSecondary"
+              style={{color:'#DDD'}}
               component="p">
               {commentContent}
             </Typography>

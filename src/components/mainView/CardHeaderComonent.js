@@ -14,7 +14,7 @@ const linkStyle = {
 }
 
 const btnStyle = {
-  color: '#757575',
+  color: '#DDD'
 }
 
 const setAvatar = () => {
@@ -30,26 +30,13 @@ const setName = () => {
   return user
 }
 
-const randomColor = () => {
-  let color = '';
-
-  let num1 = (Math.floor(Math.random() * 256)),
-    num2 = (Math.floor(Math.random() * 256)),
-    num3 = (Math.floor(Math.random() * 256));
-
-  color = `rgb(${num1},${num2},${num3})`
-
-  return color;
-}
-
-
 export default function CardHeaderComponent() {
   const userProfile = `/profile/${setName()}`;
 
   return (
     <CardHeader
       avatar={
-        <Avatar aria-label="recipe" style={{ backgroundColor: randomColor() }}>
+        <Avatar aria-label="recipe" style={{ backgroundColor: '#9F2F0A' }}>
           {setAvatar()}
         </Avatar>
       }

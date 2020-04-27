@@ -1,0 +1,11 @@
+.mainView {
+  padding-top: 64px ;
+  /* background-color: red; */
+  /* margin: auto; */
+  height: 100vh;
+  background-image: url('../../assets/img/Bg5422.jpg');
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+
+}

@@ -8,6 +8,8 @@ import {
 } from '@material-ui/core/';
 import { app } from "../../config/base";
 import { Link } from 'react-router-dom'
+import logoImg from '../../assets/img/62605.jpg'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
   link: {
     textDecoration: 'none',
     color: 'white'
+  },
+  bar: {
+    backgroundColor: '#222222'
   }
 }));
 
@@ -31,7 +36,7 @@ export default function ButtonAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed">
+      <AppBar className={classes.bar} position="fixed">
         <Toolbar>
           
           {/* logo */}
@@ -40,7 +45,7 @@ export default function ButtonAppBar() {
               to='/'
               className={classes.link}
             >
-              9Social
+              <img style ={{width: '50px', height:'50px'}} src={logoImg} title='9Social' />
             </Link>
           </Typography>
 
@@ -49,6 +54,7 @@ export default function ButtonAppBar() {
             color="inherit"
             onClick={() => app.auth().signOut()}
           >
+            <ExitToAppIcon/>
             Log Out {user}
           </Button>
 

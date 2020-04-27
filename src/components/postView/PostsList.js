@@ -56,14 +56,15 @@ export default function PostsList() {
       )
     }
 
-    return post.map(({ id, author, context, time, commentList }) => (
+    return post.map(({ id, author, context, time, commentList, likes }) => (
       <Post
         key={id}
         docsId={id}
         author={author}
         context={context}
         time={time}
-        comment={commentList} />
+        comment={commentList}
+        likes={likes} />
     )).reverse()
   }
 

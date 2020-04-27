@@ -13,7 +13,8 @@ const useStyles = makeStyles(() => ({
   },
   paper: {
     width: '90vh',
-    margin: '1rem 0'
+    margin: '1rem 0',
+    backgroundColor: '#777'
   }
 }))
 

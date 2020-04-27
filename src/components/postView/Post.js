@@ -26,7 +26,9 @@ const useStyles = makeStyles(() => ({
   },
   paper: {
     width: '90vh',
-    margin: '1rem 0'
+    margin: '1rem 0',
+    backgroundColor: '#555555',
+
   },
   comment: {
     width: '80vh',
@@ -34,6 +36,7 @@ const useStyles = makeStyles(() => ({
   },
   heading: {
     width: '-webkit-fill-available',
+    backgroundColor: '#777'
   },
   commentBar: {
     width: '-webkit-fill-available',
@@ -51,7 +54,8 @@ const useStyles = makeStyles(() => ({
   },
   commentSection: {
     maxHeight: '55vh',
-    overflowY: 'auto'
+    overflowY: 'auto',
+    backgroundColor: '#555'
   }
 }))
 
@@ -72,7 +76,8 @@ export default function Post(props) {
     avatar = author.charAt(0),
     postContent = props.context,
     time = props.time,
-    commnt = props.comment;
+    commnt = props.comment,
+    likes = props.likes;
 
 
   //comment section
@@ -138,7 +143,6 @@ export default function Post(props) {
   const handleLike = () => {
 
     const userRef = app.firestore().collection('status').doc(`${ids}`);
-    const docs = document.querySelectorAll('#likeBtn')
 
     app.firestore().runTransaction(trans => {
       return trans.get(userRef).then(doc => {
@@ -188,7 +192,7 @@ export default function Post(props) {
                   to={userProfile}
                   style={{
                     textDecoration: 'none',
-                    color: '#757575'
+                    color: '#DDD'
                   }}>
                   {author}
                 </Link>
@@ -199,7 +203,7 @@ export default function Post(props) {
           {/* post content */}
           <Grid item xs={12}>
             <CardContent>
-              <Typography variant="body2" color="textSecondary" component="p">
+              <Typography variant="body2" style={{ color: '#DDD' }} component="p">
                 {postContent}
               </Typography>
             </CardContent>
@@ -208,8 +212,15 @@ export default function Post(props) {
           <Grid item xs={12} style={{ marginLeft: '1rem' }}>
             {/* like ico */}
             <IconButton id='likeBtn' onClick={handleLike}>
-              <FavoriteBorderOutlined style={{ color: '#BDBDBD' }} />
+              <FavoriteBorderOutlined style={likes.length > 0 ? { color: '#FF0000' } : { color: '#BDBDBD' }} />
             </IconButton>
+            {
+              (!likes.length) ? '' : (
+                <Typography variant="body2" component="span" className={classes.counter}>
+                  {likes.length}
+                </Typography>
+              )
+            }
             {/* comment ico */}
             <IconButton >
               <InsertComment style={{ color: '#BDBDBD' }} />
@@ -224,16 +235,28 @@ export default function Post(props) {
           </Grid>
           {/* add comment section */}
           <Grid item xs={12}>
+
             <CardActions disableSpacing>
               <ExpansionPanel className={classes.heading}>
+
                 <ExpansionPanelSummary
                   aria-controls="panel1a-content"
                   id="panel1a-header">
-                  <Typography component="span" style={{ fontSize: '1rem', marginLeft: 'auto' }}>Add comment</Typography>
+                  <Typography
+                    component="span"
+                    style={{ fontSize: '1rem', marginLeft: 'auto' }}
+                  >
+                    Add comment
+                  </Typography>
                 </ExpansionPanelSummary>
+
                 <ExpansionPanelDetails>
-                  <Typography component="div" style={{ width: '100%' }}>
-                    <TextField className={classes.commentBar}
+                  <Typography
+                    component="div"
+                    style={{ width: '100%' }}
+                  >
+                    <TextField
+                      className={classes.commentBar}
                       id="outlined-textarea"
                       label="Place your comment"
                       placeholder="Stop hate!"
@@ -250,6 +273,7 @@ export default function Post(props) {
                     </Button>
                   </Typography>
                 </ExpansionPanelDetails>
+
               </ExpansionPanel>
             </CardActions>
           </Grid>

@@ -10,7 +10,6 @@ import {
 import { app } from "../../config/base";
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
-
 const useStyles = makeStyles(() => ({
   root: {
     width: '95vh',
@@ -21,8 +20,22 @@ const useStyles = makeStyles(() => ({
     paddingTop: '56.25%', // 16:9
   },
   searchBar: {
+    '& label.Mui-focused': {
+      color: 'white',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white',
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'white',
+      }
+    },
     margin: 'auto 1rem',
-    width: '-webkit-fill-available'
+    width: '-webkit-fill-available',
   }
 }))
 
@@ -75,7 +88,6 @@ export default function Status() {
       <TextField className={classes.searchBar}
         id="outlined-textarea"
         label="How are you?"
-        placeholder="Say something nice"
         multiline
         variant="outlined"
         value={statusValue}
@@ -83,17 +95,18 @@ export default function Status() {
       />
       <CardActions disableSpacing>
         {/* Camera button - future task */}
-        <IconButton color="primary" aria-label="upload picture" component="span">
+        <IconButton style={{color:'#DDD'}} aria-label="upload picture" component="span">
           <PhotoCamera />
         </IconButton>
         {/* Share status button */}
         <Button
-          variant="outlined"
-          color="primary"
-          style={{ marginLeft: 'auto' }}
+          // variant="outlined"
+          
+          style={{ marginLeft: 'auto', color: '#DDD', fontSize: '15px' }}
           onClick={handleStatus}
-        >
-          SHARE
+          >
+          
+          <strong>SHARE</strong>
         </Button>
 
       </CardActions>

@@ -11,7 +11,8 @@ import Status from './Status'
 const useStyles = makeStyles(() => ({
   root: {
     width: '95vh',
-    margin: '1rem 0'
+    margin: '1rem 0',
+    backgroundColor: '#444444'
   },
   media: {
     height: 0,
