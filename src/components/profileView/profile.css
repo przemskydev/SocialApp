@@ -1,0 +1,10 @@
+.profileView {
+  height: 100vh;
+  padding-top: 64px;
+  background-image: url('../../assets/img/90630.jpg');
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+/* 'linear-gradient(to right, #00E5F5 , #F540F1)' */

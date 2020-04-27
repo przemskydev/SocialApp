@@ -22,7 +22,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     margin: '1rem auto',
     width: '70vh',
-    height: '80vh'
+    height: '80vh',
+    backgroundColor: '#444'
+
   },
   image: {
     width: 80,
@@ -32,16 +34,13 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   about: {
-    borderBottom: '1px solid #3F51B5',
+    borderBottom: '1px solid #00A1BD',
   }
 }));
 
 export default function ProfileCard() {
   let { id } = useParams()
   const classes = useStyles();
-
-  // console.log(app.auth().currentUser.displayName);
-  // console.log(id);
 
   const [about, setAbout] = useState(() => {
     app.firestore()
@@ -54,7 +53,7 @@ export default function ProfileCard() {
       .catch(err => console.errror(err))
   });
   const [edit, setEdit] = useState(false)
-  const [followed, setFollowed] = useState(false)
+  // const [followed, setFollowed] = useState(false)
 
   useEffect(() => {
     aboutMeEdit()
@@ -90,7 +89,7 @@ export default function ProfileCard() {
       return (
         <Typography
           component="p"
-          style={{ padding: '1.5rem' }
+          style={{ padding: '1.5rem', fontSize: '1.3rem' }
           }
         >
           {about ? about : 'Loading...'}
@@ -116,11 +115,16 @@ export default function ProfileCard() {
       .doc(`${id}`)
       .get()
       .then(doc => {
-        if ((doc.data().followers.indexOf(current))>-1 ) {
+        if ((doc.data().followers.indexOf(current)) > -1) {
           document.querySelector('#followBtn').classList.add('Mui-disabled')
         }
       }
       )
+  }
+  // BUTTONS
+  const editBtn = {
+    borderColor: '#00A1BD',
+    color: '#00A1BD'
   }
 
   const displayButton = (id) => {
@@ -130,10 +134,20 @@ export default function ProfileCard() {
     if (currentUser === user) {
       return (
         <>
-          <Button variant="outlined" color="primary" disabled>
+          <Button
+            style={{ marginRight: '1rem' }}
+            variant="outlined"
+            color="primary"
+            disabled
+          >
             Follow
           </Button>
-          <Button variant="outlined" color="secondary" onClick={handleEdit}>
+
+          <Button
+            variant="outlined"
+            style={editBtn}
+            onClick={handleEdit}
+          >
             {edit ? 'SAVE' : 'EDIT'}
           </Button>
         </>
@@ -141,10 +155,20 @@ export default function ProfileCard() {
     } else {
       return (
         <>
-          <Button id='followBtn' variant="outlined" color="primary" onClick={follow}>
+          <Button
+            id='followBtn'
+            style={{ marginRight: '1rem' }}
+            variant="outlined"
+            color="primary"
+            onClick={follow}
+          >
             Follow
           </Button>
-          <Button id='dm' variant="outlined">
+
+          <Button
+            id='dm'
+            variant="outlined"
+          >
             DM
           </Button>
         </>
@@ -212,11 +236,11 @@ export default function ProfileCard() {
         <Paper className={classes.paper}>
           <Grid container spacing={2}>
             {/* My profile */}
-            <Grid item xs={12} className={classes.profile}>
+            {/* <Grid item xs={12} className={classes.profile}>
               <Typography variant="h6" style={{ borderBottom: '1px solid #3F51B5' }}>
                 My profile
-            </Typography>
-            </Grid>
+              </Typography>
+            </Grid> */}
             {/* Image and Name */}
             <Grid item xs={6}
               container
@@ -227,8 +251,7 @@ export default function ProfileCard() {
                 <img className={classes.image} alt="logo" src={logo} />
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="h5">
-                  {/* {userName()} */}
+                <Typography variant="h4">
                   {id}
                 </Typography>
               </Grid>
@@ -249,7 +272,7 @@ export default function ProfileCard() {
             <Grid item xs={6} className={classes.about}>
               <Typography variant="h6">
                 About me:
-            </Typography>
+              </Typography>
             </Grid>
             {/* Join Date */}
             <Grid item xs={6}

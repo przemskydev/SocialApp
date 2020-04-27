@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { app } from "../../config/base";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     width: 'auto',
@@ -23,7 +23,6 @@ export default function PostsList() {
   useEffect(() => {
     listenForPosts()
   }, [])
-  // console.log(post)
 
   const listenForPosts = () => {
     app
@@ -57,7 +56,7 @@ export default function PostsList() {
       )
     }
 
-    return post.map(({ id, author, context, time, commentList }) => (
+    return post.map(({ id, author, context, time, commentList, likes }) => (
       <Post
         key={id}
         docsId={id}
@@ -65,7 +64,7 @@ export default function PostsList() {
         context={context}
         time={time}
         comment={commentList}
-      />
+        likes={likes} />
     )).reverse()
   }
 

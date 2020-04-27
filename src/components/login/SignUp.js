@@ -48,7 +48,8 @@ const SignUp = ({ history }) => {
     .set({
       name: firstName,
       aboutme: 'Click edit button',
-      followers: []
+      followers: [],
+      following: []
     })
   }
 

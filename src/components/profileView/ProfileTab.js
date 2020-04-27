@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import { app } from "../../config/base";
 import { useParams } from 'react-router-dom';
 import FollowerView from './followersView/Follower'
 import UserPostView from './followersView/UserPostView'
-import { List } from '@material-ui/core';
+import {
+  AppBar,
+  Tabs,
+  Tab,
+  Typography,
+  Box,
+  List
+} from '@material-ui/core';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,35 +48,22 @@ function a11yProps(index) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundImage: theme.palette.background.paper,
     width: '-webkit-fill-available',
   },
 }));
 
 export default function FullWidthTabs() {
-  const classes = useStyles();
-  const theme = useTheme();
-  let { id } = useParams()
+  const classes = useStyles(),
+    theme = useTheme();
+  let { id } = useParams();
 
+  const [value, setValue] = useState(0),
+    [myFollowersList, setFollowers] = useState(null),
+    [myStatusList, setMyStatus] = useState(null),
+    [followingers, setFollowingers] = useState(null);
 
-  const [value, setValue] = useState(0);
-  const [myFollowersList, setFollowers] = useState(null)
-  const [myStatusList, setMyStatus] = useState(null)
-  const [followingers, setFollowingers] = useState(null)
-  // console.log(myStatusList)
-  useEffect(() => {
-    followersList()
-  }, [])
-
-  useEffect(() => {
-    statusList()
-  }, [])
-
-  useEffect(() => {
-    followingPeople()
-  }, [])
-
-  const handleChange = (event, newValue) => {
+  const handleChange = (value, newValue) => {
     setValue(newValue);
   };
 
@@ -81,75 +71,98 @@ export default function FullWidthTabs() {
     setValue(index);
   };
 
-  const followersList = () => {
-    app
-      .firestore()
-      .collection('user')
-      .doc(`${id}`)
-      .onSnapshot(snap => {
-        const followers = (snap.data().followers)
-        setFollowers(followers)
-      })
-  }
+  useEffect(() => {
+    const followersList = () => {
+      app
+        .firestore()
+        .collection('user')
+        .doc(`${id}`)
+        .onSnapshot(snap => {
+          const followers = (snap.data().followers)
+          setFollowers(followers)
+        })
+    }
+    followersList()
+  }, [])
 
-  const statusList = () => {
-    app
-      .firestore()
-      .collection('status')
-      .where('author', '==', `${id}`)
-      .onSnapshot(snap => {
-        const myPost = [];
-        snap.forEach(doc => myPost.push(doc.data()))
-        setMyStatus(myPost)
-      })
-  }
+  useEffect(() => {
+    const statusList = () => {
+      app
+        .firestore()
+        .collection('status')
+        .where('author', '==', `${id}`)
+        .onSnapshot(snap => {
+          const myPost = [];
+          snap.forEach(doc => myPost.push(doc.data()))
+          setMyStatus(myPost)
+        })
+    }
+    statusList()
+  }, [])
 
-  const followingPeople = () => {
-    app
-      .firestore()
-      .collection('user')
-      .doc(`${id}`)
-      .onSnapshot(snap => {
-        const following = (snap.data().following)
-        setFollowingers(following)
-      })
-  }
-
+  useEffect(() => {
+    const followingPeople = () => {
+      app
+        .firestore()
+        .collection('user')
+        .doc(`${id}`)
+        .onSnapshot(snap => {
+          const following = (snap.data().following)
+          setFollowingers(following)
+        })
+    }
+    followingPeople()
+  }, [])
 
   const userPosts = () => {
+
     return (
-      (myStatusList) ? (
-        myStatusList.map(status => {
-          return (
-            <UserPostView key={status.id} {...status}/>
-          )
-        }).reverse()
-      ) : (`Dont have posts yet`)
+      (myStatusList && myStatusList.length > 0)
+        ?
+        (
+          myStatusList.map(status => {
+            return (
+              <UserPostView key={status.id} {...status} />
+            )
+          }).reverse()
+        )
+        :
+        (`Don't have posts yet`)
     )
   }
 
   const userFollowers = () => {
+
     return (
-      (myFollowersList) ? (
-        myFollowersList.map(follower => {
-          return (
-            <FollowerView key={follower} follower={follower} />
+      (myFollowersList && myFollowersList.length > 0)
+        ?
+        (
+          myFollowersList.map(follower => {
+            return (
+              <FollowerView key={follower} follower={follower} />
+            )
+          }
           )
-        }
         )
-      ) : (`Dont have followers`)
+        :
+        (`Nobody FOLLOW You`)
     )
   }
 
   const myFollowing = () => {
+
     return (
-      (followingers) ? (
-        followingers.map(fling => {
-          return (
-            <FollowerView key={fling} follower={fling} />
-          )
-        })
-      ) : (`Dont have FOLLOWING`)
+      (followingers && followingers.length > 0)
+        ?
+        (
+          followingers.map(fling => {
+            return (
+              <FollowerView key={fling} follower={fling} />
+            )
+          })
+        )
+        :
+        (`Dont have anybody to follow`)
     )
   }
 

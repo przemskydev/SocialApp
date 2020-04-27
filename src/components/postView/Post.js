@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Comment from './Comment'
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -20,14 +20,15 @@ import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
 import { app } from "../../config/base";
 import { Link } from 'react-router-dom'
 
-
 const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
   },
   paper: {
     width: '90vh',
-    margin: '1rem 0'
+    margin: '1rem 0',
+    backgroundColor: '#555555',
+
   },
   comment: {
     width: '80vh',
@@ -35,6 +36,7 @@ const useStyles = makeStyles(() => ({
   },
   heading: {
     width: '-webkit-fill-available',
+    backgroundColor: '#777'
   },
   commentBar: {
     width: '-webkit-fill-available',
@@ -52,7 +54,8 @@ const useStyles = makeStyles(() => ({
   },
   commentSection: {
     maxHeight: '55vh',
-    overflowY: 'auto'
+    overflowY: 'auto',
+    backgroundColor: '#555'
   }
 }))
 
@@ -64,29 +67,31 @@ const setCommentAuthorName = () => {
 }
 
 export default function Post(props) {
-  const classes = useStyles();
-  // const
-  const ids = props.docsId;
-  const author = props.author;
-  const avatar = author.charAt(0);
-  const postContent = props.context;
-  const time = props.time;
-  const commnt = props.comment;
+  const classes = useStyles(),
+    currentUser = app.auth().currentUser.displayName;
+
+  // props const
+  const ids = props.docsId,
+    author = props.author,
+    avatar = author.charAt(0),
+    postContent = props.context,
+    time = props.time,
+    commnt = props.comment,
+    likes = props.likes;
 
 
   //comment section
   const [comment, setComment] = useState('');
 
   const handleAddComment = () => {
-    const commentAuthor = setCommentAuthorName();
-    const commentContext = comment;
-    const userRef = app.firestore().collection('status').doc(`${ids}`)
-    // console.log(newComment)
-    const commentData = {
-      author: commentAuthor,
-      commentContext: commentContext,
-      // time: time
-    }
+
+    const commentAuthor = setCommentAuthorName(),
+      commentContext = comment,
+      userRef = app.firestore().collection('status').doc(`${ids}`),
+      commentData = {
+        author: commentAuthor,
+        commentContext: commentContext
+      };
 
     app.firestore().runTransaction(transaction => {
       return transaction.get(userRef).then(doc => {
@@ -108,6 +113,7 @@ export default function Post(props) {
   }
 
   const showCommentList = () => {
+
     return (
       commnt.map(({ author, commentContext }, id) => (
         <Comment
@@ -119,10 +125,55 @@ export default function Post(props) {
     )
   }
 
-  const userProfile = `/profile/${author}`
+  useEffect(() => {
+    const redHeart = () => {
+      let postList = document.querySelectorAll('#likeBtn')
+      postList.forEach(post =>
+        post.addEventListener('click', (e) => {
+
+          e.target.style.color = 'red'
+
+        }))
+    }
+    return redHeart()
+
+  })
+
+
+  const handleLike = () => {
+
+    const userRef = app.firestore().collection('status').doc(`${ids}`);
+
+    app.firestore().runTransaction(trans => {
+      return trans.get(userRef).then(doc => {
+
+        if (!doc.data().likes) {
+          trans.set({
+            likes: currentUser
+          })
+
+        } else {
+          const newLike = doc.data().likes;
+          console.log(newLike, currentUser)
+
+          if ((newLike.indexOf(currentUser)) < 0) {
+
+            newLike.push(currentUser);
+            trans.update(userRef, { likes: newLike })
+
+          } else {
+            console.log('nope')
+          }
+
+        }
+      })
+    })
+  }
+
+  const userProfile = `/profile/${author}`;
 
   return (
-    <div className={classes.root}>
+    <div id={ids} className={classes.root}>
       <Grid container
         direction="row"
         justify="center"
@@ -141,7 +192,7 @@ export default function Post(props) {
                   to={userProfile}
                   style={{
                     textDecoration: 'none',
-                    color: '#757575'
+                    color: '#DDD'
                   }}>
                   {author}
                 </Link>
@@ -152,18 +203,25 @@ export default function Post(props) {
           {/* post content */}
           <Grid item xs={12}>
             <CardContent>
-              <Typography variant="body2" color="textSecondary" component="p">
+              <Typography variant="body2" style={{ color: '#DDD' }} component="p">
                 {postContent}
               </Typography>
             </CardContent>
           </Grid>
           {/* like buttons */}
           <Grid item xs={12} style={{ marginLeft: '1rem' }}>
-
-            <IconButton >
-              <FavoriteBorderOutlined style={{ color: '#BDBDBD' }} />
+            {/* like ico */}
+            <IconButton id='likeBtn' onClick={handleLike}>
+              <FavoriteBorderOutlined style={likes.length > 0 ? { color: '#FF0000' } : { color: '#BDBDBD' }} />
             </IconButton>
-
+            {
+              (!likes.length) ? '' : (
+                <Typography variant="body2" component="span" className={classes.counter}>
+                  {likes.length}
+                </Typography>
+              )
+            }
+            {/* comment ico */}
             <IconButton >
               <InsertComment style={{ color: '#BDBDBD' }} />
             </IconButton>
@@ -177,16 +235,28 @@ export default function Post(props) {
           </Grid>
           {/* add comment section */}
           <Grid item xs={12}>
+
             <CardActions disableSpacing>
               <ExpansionPanel className={classes.heading}>
+
                 <ExpansionPanelSummary
                   aria-controls="panel1a-content"
                   id="panel1a-header">
-                  <Typography component="span" style={{ fontSize: '1rem', marginLeft: 'auto' }}>Add comment</Typography>
+                  <Typography
+                    component="span"
+                    style={{ fontSize: '1rem', marginLeft: 'auto' }}
+                  >
+                    Add comment
+                  </Typography>
                 </ExpansionPanelSummary>
+
                 <ExpansionPanelDetails>
-                  <Typography component="div" style={{ width: '100%' }}>
-                    <TextField className={classes.commentBar}
+                  <Typography
+                    component="div"
+                    style={{ width: '100%' }}
+                  >
+                    <TextField
+                      className={classes.commentBar}
                       id="outlined-textarea"
                       label="Place your comment"
                       placeholder="Stop hate!"
@@ -203,6 +273,7 @@ export default function Post(props) {
                     </Button>
                   </Typography>
                 </ExpansionPanelDetails>
+
               </ExpansionPanel>
             </CardActions>
           </Grid>
