@@ -102,17 +102,16 @@ export default function Status() {
           </IconButton>
         </Tooltip>
         {/* Share status button */}
+
         <Tooltip title='Click here to share your status' placement='left'>
           <Button
-            // variant="outlined"
-
             style={{ marginLeft: 'auto', color: '#DDD', fontSize: '15px' }}
             onClick={handleStatus}
           >
-
             <strong>SHARE</strong>
           </Button>
         </Tooltip>
+        
       </CardActions>
     </>
   )

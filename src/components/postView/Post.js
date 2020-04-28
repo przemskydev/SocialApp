@@ -227,7 +227,7 @@ export default function Post(props) {
 
                     <>
                       {
-                        (likes.length != 0)
+                        (likes.length !== 0)
                           ? (
                             likes.map((like, index) =>
                               <p key={index}>
