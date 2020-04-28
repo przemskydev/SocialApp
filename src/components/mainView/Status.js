@@ -6,6 +6,7 @@ import {
   TextField,
   CardActions,
   IconButton,
+  Tooltip
 } from '@material-ui/core';
 import { app } from "../../config/base";
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
@@ -95,20 +96,23 @@ export default function Status() {
       />
       <CardActions disableSpacing>
         {/* Camera button - future task */}
-        <IconButton style={{color:'#DDD'}} aria-label="upload picture" component="span">
-          <PhotoCamera />
-        </IconButton>
+        <Tooltip title='It does not work.... yet?!' placement="right" >
+          <IconButton style={{ color: '#DDD' }} aria-label="upload picture" component="span">
+            <PhotoCamera />
+          </IconButton>
+        </Tooltip>
         {/* Share status button */}
-        <Button
-          // variant="outlined"
-          
-          style={{ marginLeft: 'auto', color: '#DDD', fontSize: '15px' }}
-          onClick={handleStatus}
-          >
-          
-          <strong>SHARE</strong>
-        </Button>
+        <Tooltip title='Click here to share your status' placement='left'>
+          <Button
+            // variant="outlined"
 
+            style={{ marginLeft: 'auto', color: '#DDD', fontSize: '15px' }}
+            onClick={handleStatus}
+          >
+
+            <strong>SHARE</strong>
+          </Button>
+        </Tooltip>
       </CardActions>
     </>
   )

@@ -2,7 +2,8 @@ import React from 'react'
 import {
   Avatar,
   CardHeader,
-  Button
+  Button,
+  Tooltip
 } from '@material-ui/core';
 import { app } from "../../config/base";
 import { Link } from 'react-router-dom'
@@ -41,20 +42,24 @@ export default function CardHeaderComponent() {
         </Avatar>
       }
       title={
-        <Link to={userProfile} style={linkStyle} >
-          <Button style={btnStyle} >
-            {
-              setName()
-            }
-          </Button>
-        </Link>
+        <Tooltip title='Go to your personal profile' placement='right'>
+          <Link to={userProfile} style={linkStyle} >
+            <Button style={btnStyle} >
+              {
+                setName()
+              }
+            </Button>
+          </Link>
+        </Tooltip>
       }
       action={
-        <Link to={userProfile} style={linkStyle} >
-          <Button style={{ fontSize: '9px', color: '#DDD', borderBottom: '1px solid #BBB'}} >
-            profile
+        <Tooltip title='Go to your personal profile' placement='left'>
+          <Link to={userProfile} style={linkStyle} >
+            <Button style={{ fontSize: '9px', color: '#DDD', borderBottom: '1px solid #BBB' }} >
+              profile
           </Button>
-        </Link>
+          </Link>
+        </Tooltip>
       }
     />
   )
