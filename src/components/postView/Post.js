@@ -154,7 +154,6 @@ export default function Post(props) {
 
         } else {
           const newLike = doc.data().likes;
-          console.log(newLike, currentUser)
 
           if ((newLike.indexOf(currentUser)) < 0) {
 
@@ -162,7 +161,7 @@ export default function Post(props) {
             trans.update(userRef, { likes: newLike })
 
           } else {
-            console.log('nope')
+            console.error('You like it')
           }
 
         }

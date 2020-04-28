@@ -45,14 +45,13 @@ export default function CardHeaderComponent() {
           <Button style={btnStyle} >
             {
               setName()
-
             }
           </Button>
         </Link>
       }
       action={
         <Link to={userProfile} style={linkStyle} >
-          <Button style={btnStyle} >
+          <Button style={{ fontSize: '9px', color: '#DDD', borderBottom: '1px solid #BBB'}} >
             profile
           </Button>
         </Link>

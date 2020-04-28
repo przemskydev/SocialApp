@@ -88,8 +88,12 @@ export default function ProfileCard() {
     if (!edit) {
       return (
         <Typography
-          component="p"
-          style={{ padding: '1.5rem', fontSize: '1.3rem' }
+          component="h6"
+          style={{
+            padding: '1.5rem',
+            fontSize: '1.3rem',
+            color: '#ddd'
+          }
           }
         >
           {about ? about : 'Loading...'}
@@ -127,6 +131,11 @@ export default function ProfileCard() {
     color: '#00A1BD'
   }
 
+  const dmBtn = {
+    borderColor: '#d161e6',
+    color: '#d161e6'
+  }
+
   const displayButton = (id) => {
     const currentUser = app.auth().currentUser.displayName
     const user = id
@@ -135,10 +144,11 @@ export default function ProfileCard() {
       return (
         <>
           <Button
-            style={{ marginRight: '1rem' }}
             variant="outlined"
-            color="primary"
             disabled
+            style={{
+              marginRight: '1rem'
+            }}
           >
             Follow
           </Button>
@@ -157,9 +167,11 @@ export default function ProfileCard() {
         <>
           <Button
             id='followBtn'
-            style={{ marginRight: '1rem' }}
+            color='primary'
+            style={{
+              marginRight: '1rem'
+            }}
             variant="outlined"
-            color="primary"
             onClick={follow}
           >
             Follow
@@ -168,6 +180,7 @@ export default function ProfileCard() {
           <Button
             id='dm'
             variant="outlined"
+            style={dmBtn}
           >
             DM
           </Button>
@@ -183,6 +196,7 @@ export default function ProfileCard() {
 
     app.firestore().runTransaction(trans => {
       return trans.get(userRef).then(doc => {
+
         if (!doc.data().followers) {
           trans.set({
             followers: followerData
@@ -190,10 +204,12 @@ export default function ProfileCard() {
 
         } else {
           const newFollowersList = doc.data().followers;
-          newFollowersList.push(followerData);
-          trans.update(userRef, { followers: newFollowersList })
 
-          if (newFollowersList.indexOf(followerData)) {
+          if (newFollowersList.indexOf(followerData) < 0) {
+
+            newFollowersList.push(followerData);
+            trans.update(userRef, { followers: newFollowersList })
+            
             document.querySelector('#followBtn').classList.add('Mui-disabled')
 
           }
@@ -211,9 +227,6 @@ export default function ProfileCard() {
     const userLogged = currentUser;
     const userToFollow = follower;
     const userRef = app.firestore().collection('user').doc(`${userLogged}`);
-
-    console.log(`Watched profile to follow ${userToFollow}`)
-    console.log(`${userLogged} Logged in`)
 
     app.firestore().runTransaction(trans => {
       return trans.get(userRef).then(doc => {
@@ -235,12 +248,6 @@ export default function ProfileCard() {
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <Grid container spacing={2}>
-            {/* My profile */}
-            {/* <Grid item xs={12} className={classes.profile}>
-              <Typography variant="h6" style={{ borderBottom: '1px solid #3F51B5' }}>
-                My profile
-              </Typography>
-            </Grid> */}
             {/* Image and Name */}
             <Grid item xs={6}
               container
@@ -251,7 +258,7 @@ export default function ProfileCard() {
                 <img className={classes.image} alt="logo" src={logo} />
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="h4">
+                <Typography variant="h4" style={{ color: '#ddd' }}>
                   {id}
                 </Typography>
               </Grid>
@@ -270,7 +277,7 @@ export default function ProfileCard() {
             </Grid>
             {/* About me head */}
             <Grid item xs={6} className={classes.about}>
-              <Typography variant="h6">
+              <Typography variant="body1" component='p'>
                 About me:
               </Typography>
             </Grid>
