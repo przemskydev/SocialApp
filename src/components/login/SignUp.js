@@ -14,7 +14,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
 import { app } from "../../config/base";
 
-
+import useFormValidation from './FormValidation'
+import validateAuth from './ValidateAuth'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,44 +37,53 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const INITIAL_STATE = {
+  firstName: '',
+  email: '',
+  password: ''
+}
+
 const SignUp = ({ history }) => {
 
-  const [firstName, setFirstName] = useState('');
-  // const [fnameValidator, setFnBool] = useState(null)
-
+  const {
+    handleSignUp,
+    handleChange,
+    handleBlur,
+    values,
+    errors,
+    isSubmitting
+  } = useFormValidation(INITIAL_STATE, validateAuth, authenticateUser)
 
   const handleSetName = () => {
-      app
-        .firestore()
-        .collection('user')
-        .doc(`${firstName}`)
-        .set({
-          name: firstName,
-          aboutme: 'Click edit button',
-          followers: [],
-          following: []
-        })
+    app
+      .firestore()
+      .collection('user')
+      .doc(`${values.firstName}`)
+      .set({
+        name: values.firstName,
+        aboutme: 'Click edit button',
+        followers: [],
+        following: []
+      })
   }
 
-
-
-  const handleSignUp = useCallback(async event => {
-    event.preventDefault();
-    const { email, password, firstName } = event.target.elements;
+  async function authenticateUser() {
+    // event.preventDefault();
+    const { email, password, firstName } = values;
     try {
       await app
         .auth()
-        .createUserWithEmailAndPassword(email.value, password.value)
-        .then(result=>{
+        .createUserWithEmailAndPassword(email, password)
+        .then(result => {
           return result.user.updateProfile({
-            displayName: firstName.value
+            displayName: firstName
           })
         });
       history.push("/");
     } catch (error) {
-      alert(error);
+      console.error(error);
     }
-  }, [history]);
+  };
 
   const classes = useStyles();
 
@@ -95,7 +105,7 @@ const SignUp = ({ history }) => {
 
             <Grid item xs={12}>
               <TextField
-                // error={fnameValidator}
+                error={errors.firstName ? true : false}
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
@@ -103,16 +113,17 @@ const SignUp = ({ history }) => {
                 fullWidth
                 id="firstName"
                 label="Your Full Name"
-                // helperText={fnameValidator ? "Incorrect entry." : null}
+                helperText={errors.firstName ? "Incorrect entry. Min 3 char" : null}
                 autoFocus
-                onChange={e => {
-                  e.target.value ? setFirstName(e.target.value) : console.error();
-                }}
+                onChange={handleChange}
+                value={values.firstName}
+                onBlur={handleBlur}
               />
             </Grid>
 
             <Grid item xs={12}>
               <TextField
+                error={errors.email ? true : false}
                 variant="outlined"
                 required
                 fullWidth
@@ -120,11 +131,16 @@ const SignUp = ({ history }) => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                helperText={errors.email ? "Incorrect entry" : null}
+                onChange={handleChange}
+                value={values.email}
+                onBlur={handleBlur}
               />
             </Grid>
 
             <Grid item xs={12}>
               <TextField
+                error={errors.password ? true : false}
                 variant="outlined"
                 required
                 fullWidth
@@ -133,6 +149,10 @@ const SignUp = ({ history }) => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                helperText={errors.password ? "Incorrect entry. Min 6 char" : null}
+                onChange={handleChange}
+                value={values.password}
+                onBlur={handleBlur}
               />
             </Grid>
           </Grid>
