@@ -1,14 +1,14 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   Avatar,
   Button,
   CssBaseline,
   TextField,
-  Link,
   Grid,
   Typography,
   Container
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
@@ -39,19 +39,23 @@ const useStyles = makeStyles((theme) => ({
 const SignUp = ({ history }) => {
 
   const [firstName, setFirstName] = useState('');
+  // const [fnameValidator, setFnBool] = useState(null)
+
 
   const handleSetName = () => {
-    app
-    .firestore()
-    .collection('user')
-    .doc(`${firstName}`)
-    .set({
-      name: firstName,
-      aboutme: 'Click edit button',
-      followers: [],
-      following: []
-    })
+      app
+        .firestore()
+        .collection('user')
+        .doc(`${firstName}`)
+        .set({
+          name: firstName,
+          aboutme: 'Click edit button',
+          followers: [],
+          following: []
+        })
   }
+
+
 
   const handleSignUp = useCallback(async event => {
     event.preventDefault();
@@ -77,27 +81,36 @@ const SignUp = ({ history }) => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
+
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
+
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+
         <form className={classes.form} noValidate onSubmit={handleSignUp} >
           <Grid container spacing={2}>
+
             <Grid item xs={12}>
               <TextField
+                // error={fnameValidator}
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
                 required
                 fullWidth
                 id="firstName"
-                label="Your Name"
+                label="Your Full Name"
+                // helperText={fnameValidator ? "Incorrect entry." : null}
                 autoFocus
-                onChange={e => setFirstName(e.target.value)}
+                onChange={e => {
+                  e.target.value ? setFirstName(e.target.value) : console.error();
+                }}
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -109,6 +122,7 @@ const SignUp = ({ history }) => {
                 autoComplete="email"
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -122,6 +136,7 @@ const SignUp = ({ history }) => {
               />
             </Grid>
           </Grid>
+
           <Button
             type="submit"
             fullWidth
@@ -132,12 +147,15 @@ const SignUp = ({ history }) => {
           >
             Sign Up
           </Button>
+
           <Grid container justify="flex-end">
+
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link to='/login' style={{ textDecoration: 'none' }} variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
+
           </Grid>
         </form>
       </div>

@@ -4,12 +4,13 @@ import {
   Button,
   CssBaseline,
   TextField,
-  Link,
+  // Link,
   Grid,
   Container,
   Typography
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import {Link} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter, Redirect } from "react-router";
 import { app } from "../../config/base";
@@ -104,13 +105,8 @@ const SignIn = ({ history }) => {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
-              <Link href="/signup" variant="body2">
+              <Link to="/signup" variant="body2" style={{textDecoration: 'none'}}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
