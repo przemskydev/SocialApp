@@ -1,6 +1,9 @@
 export default function validateAuth(values) {
-
+  
+  //validation rules
+  
   let errors = {};
+  //user name 
   if(!values.firstName) {
     errors.firstName = 'Required full name'
   } else if (values.firstName.length < 3 ) {

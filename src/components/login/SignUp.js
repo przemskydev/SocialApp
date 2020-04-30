@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//initial state as object with initial values
 const INITIAL_STATE = {
   firstName: '',
   email: '',
@@ -44,7 +45,7 @@ const INITIAL_STATE = {
 }
 
 const SignUp = ({ history }) => {
-
+  //Destructuring returned object from custom hook usefromValidation
   const {
     handleSignUp,
     handleChange,
