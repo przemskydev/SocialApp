@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { app } from "../../config/base";
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import useStatusValidation from './StatusValidation'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -44,17 +45,21 @@ const setId = () => {
   return Date.now()
 }
 
+const INITIAL_STATE_STATUS = {
+  status: ''
+}
+
 export default function Status() {
-  const [statusValue, setStatus] = useState('')
+  const {
+    values,
+    handleChangeStatus,
+    handleCheckStatus,
+    errors
+  } = useStatusValidation(INITIAL_STATE_STATUS, addStatus);
+
   const classes = useStyles();
 
-
-  const handleSetStatusValue = (e) => {
-    setStatus(e.target.value)
-  }
-
-  const handleStatus = () => {
-    // set date data to the status
+  function addStatus(){
     const timestamp = Date.now(),
       date = new Date(timestamp),
       year = date.getFullYear(),
@@ -74,26 +79,28 @@ export default function Status() {
       .set({
         id: id,
         author: userName,
-        context: statusValue,
+        context: values.status,
         time: time,
         commentList: [],
         likes: []
       }, { merge: true })
-
-    setStatus('')
-
   }
 
   return (
     <>
+
       <TextField className={classes.searchBar}
+        error={errors.status ? true : false}
+        helperText={errors.status ? "You can not be without feelings. Share something" : null}
         id="outlined-textarea"
         label="How are you?"
         multiline
+        name='status'
         variant="outlined"
-        value={statusValue}
-        onChange={handleSetStatusValue}
+        value={values.status}
+        onChange={handleChangeStatus}
       />
+
       <CardActions disableSpacing>
         {/* Camera button - future task */}
         <Tooltip title='It does not work.... yet?!' placement="right" >
@@ -106,12 +113,12 @@ export default function Status() {
         <Tooltip title='Click here to share your status' placement='left'>
           <Button
             style={{ marginLeft: 'auto', color: '#DDD', fontSize: '15px' }}
-            onClick={handleStatus}
+            onClick={handleCheckStatus}
           >
             <strong>SHARE</strong>
           </Button>
         </Tooltip>
-        
+
       </CardActions>
     </>
   )

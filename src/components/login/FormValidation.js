@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-
+import { useState, useEffect } from 'react'
 
 function useFormValidation(initialState, validate, authenticate) {
 
@@ -54,7 +53,7 @@ function useFormValidation(initialState, validate, authenticate) {
 
   }
   //return from hook as object
-  return { handleSignUp, handleChange, handleBlur, values, errors, isSubmitting }
+  return { handleSignUp, handleChange, handleBlur, values, errors }
 }
 
 

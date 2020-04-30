@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React from "react";
 import {
   Avatar,
   Button,
@@ -51,8 +51,7 @@ const SignUp = ({ history }) => {
     handleChange,
     handleBlur,
     values,
-    errors,
-    isSubmitting
+    errors
   } = useFormValidation(INITIAL_STATE, validateAuth, authenticateUser)
 
   const handleSetName = () => {
