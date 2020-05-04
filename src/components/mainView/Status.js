@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
@@ -8,7 +8,7 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core';
-import { app } from "../../config/base";
+import { app, storage } from "../../config/base";
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import useStatusValidation from './StatusValidation'
 
@@ -38,6 +38,9 @@ const useStyles = makeStyles(() => ({
     },
     margin: 'auto 1rem',
     width: '-webkit-fill-available',
+  },
+  input: {
+    display: 'none',
   }
 }))
 
@@ -50,6 +53,9 @@ const INITIAL_STATE_STATUS = {
 }
 
 export default function Status() {
+
+  const id = setId();
+
   const {
     values,
     handleChangeStatus,
@@ -57,9 +63,47 @@ export default function Status() {
     errors
   } = useStatusValidation(INITIAL_STATE_STATUS, addStatus);
 
+  const [image, setImage] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState(null)
+
+  // console.log(`Upload... ${progress}% done`)
+  // console.log(error)
+
+
   const classes = useStyles();
 
-  function addStatus(){
+
+  function handleChange(e) {
+    const file = e.target.files[0];
+    const fileType = file.type;
+    const typeList = ['image/jpeg', 'image/png'];
+
+    if (file) {
+      typeList.includes(fileType) ? setImage(file) : console.error('Select image')
+    }
+  }
+
+  function handleUpload() {
+
+    if (image) {
+      const uploadTask = storage.ref(`status/${id}/${image.name}`).put(image)
+      uploadTask.on('state_changed', snapshot => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        )
+        setProgress(progress)
+      },
+        error => {
+          setError(error)
+        }
+      )
+    }
+
+    setImage(null)
+  }
+
+  function addStatus() {
     const timestamp = Date.now(),
       date = new Date(timestamp),
       year = date.getFullYear(),
@@ -70,7 +114,9 @@ export default function Status() {
       sec = `${date.getSeconds() < 10 ? ('0' + date.getSeconds()) : date.getSeconds()}`,
       time = `${hours}:${minutes}:${sec} ${day}/${(month < 10) ? ('0' + month) : month}/${year}`,
       userName = app.auth().currentUser.displayName,
-      id = setId();
+      isImage = image ? true : false,
+      imageName = image.name;
+
 
     app
       .firestore()
@@ -82,9 +128,14 @@ export default function Status() {
         context: values.status,
         time: time,
         commentList: [],
-        likes: []
+        likes: [],
+        img: isImage,
+        imageName: imageName
       }, { merge: true })
+
+    handleUpload()
   }
+
 
   return (
     <>
@@ -103,11 +154,24 @@ export default function Status() {
 
       <CardActions disableSpacing>
         {/* Camera button - future task */}
-        <Tooltip title='It does not work.... yet?!' placement="right" >
+
+        {/* <Tooltip title='It does not work.... yet?!' placement="right" > */}
+        <input
+          accept="image/*"
+          className={classes.input}
+          id="icon-button-file"
+          type="file"
+          onChange={handleChange}
+        />
+        <label htmlFor="icon-button-file">
           <IconButton style={{ color: '#DDD' }} aria-label="upload picture" component="span">
             <PhotoCamera />
           </IconButton>
-        </Tooltip>
+          {
+            image ? `${image.name}` : ''
+          }
+        </label>
+        {/* </Tooltip> */}
         {/* Share status button */}
 
         <Tooltip title='Click here to share your status' placement='left'>

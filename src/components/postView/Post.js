@@ -18,7 +18,7 @@ import {
   Tooltip
 } from '@material-ui/core';
 import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
-import { app } from "../../config/base";
+import { app, storage } from "../../config/base";
 import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(() => ({
@@ -78,10 +78,12 @@ export default function Post(props) {
     postContent = props.context,
     time = props.time,
     commnt = props.comment,
-    likes = props.likes;
-
+    likes = props.likes,
+    image = props.image,
+    imageName = props.imageName;
   //comment section
   const [comment, setComment] = useState('');
+  const [url, setUrl] = useState('')
 
   const handleAddComment = () => {
 
@@ -139,6 +141,22 @@ export default function Post(props) {
 
   })
 
+  const statusPhoto = () => {
+    if (image) {
+      const photoRef = storage.ref(`status/${ids}`).child(`${imageName}`)
+      // console.log(photoRef)
+      photoRef.getDownloadURL().then(url => {
+        // setUrl(url)
+        setUrl(url)
+      }).catch(error => {
+        console.error(error)
+      })
+    }
+
+    return (
+      <img src={url} alt='status photo' />
+    )
+  }
 
   const handleLike = () => {
 
@@ -204,17 +222,22 @@ export default function Post(props) {
           {/* post content */}
           <Grid item xs={12}>
             <CardContent>
+              {
+                imageName ? statusPhoto() : ''
+              }
               <Typography variant="body2" style={{ color: '#DDD' }} component="p">
-                {postContent}
+                {
+                  postContent
+                }
               </Typography>
             </CardContent>
           </Grid>
           {/* like buttons */}
           <Grid item xs={12} style={{ marginLeft: '1rem' }}>
             {/* like ico */}
-            <Tooltip  title='Number of likes' placement='top'>
-              <IconButton  id='likeBtn' onClick={handleLike}>
-                <FavoriteBorderOutlined 
+            <Tooltip title='Number of likes' placement='top'>
+              <IconButton id='likeBtn' onClick={handleLike}>
+                <FavoriteBorderOutlined
                   style={likes.length > 0 ? { color: '#FF0000' } : { color: '#BDBDBD' }}
                 />
               </IconButton>
@@ -223,7 +246,7 @@ export default function Post(props) {
               (!likes.length)
                 ? null
                 : (
-                  <Tooltip  title={
+                  <Tooltip title={
 
                     <>
                       {
