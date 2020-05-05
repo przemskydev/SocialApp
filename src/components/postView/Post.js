@@ -14,10 +14,11 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   TextField,
-  IconButton
+  IconButton,
+  Tooltip
 } from '@material-ui/core';
 import { FavoriteBorderOutlined, InsertComment } from '@material-ui/icons'
-import { app } from "../../config/base";
+import { app, storage } from "../../config/base";
 import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(() => ({
@@ -77,11 +78,12 @@ export default function Post(props) {
     postContent = props.context,
     time = props.time,
     commnt = props.comment,
-    likes = props.likes;
-
-
+    likes = props.likes,
+    image = props.image,
+    imageName = props.imageName;
   //comment section
   const [comment, setComment] = useState('');
+  const [url, setUrl] = useState('')
 
   const handleAddComment = () => {
 
@@ -139,6 +141,22 @@ export default function Post(props) {
 
   })
 
+  const statusPhoto = () => {
+    if (image) {
+      const photoRef = storage.ref(`status/${ids}`).child(`${imageName}`)
+      // console.log(photoRef)
+      photoRef.getDownloadURL().then(url => {
+        // setUrl(url)
+        setUrl(url)
+      }).catch(error => {
+        console.error(error)
+      })
+    }
+
+    return (
+      <img src={url} alt='status' />
+    )
+  }
 
   const handleLike = () => {
 
@@ -154,7 +172,6 @@ export default function Post(props) {
 
         } else {
           const newLike = doc.data().likes;
-          console.log(newLike, currentUser)
 
           if ((newLike.indexOf(currentUser)) < 0) {
 
@@ -162,7 +179,7 @@ export default function Post(props) {
             trans.update(userRef, { likes: newLike })
 
           } else {
-            console.log('nope')
+            console.error('You like it')
           }
 
         }
@@ -188,14 +205,16 @@ export default function Post(props) {
                 </Avatar>
               }
               title={
-                <Link
-                  to={userProfile}
-                  style={{
-                    textDecoration: 'none',
-                    color: '#DDD'
-                  }}>
-                  {author}
-                </Link>
+                <Tooltip title='Go to user profile' placement='right'>
+                  <Link
+                    to={userProfile}
+                    style={{
+                      textDecoration: 'none',
+                      color: '#DDD'
+                    }}>
+                    {author}
+                  </Link>
+                </Tooltip>
               }
               subheader={time}
             />
@@ -203,28 +222,62 @@ export default function Post(props) {
           {/* post content */}
           <Grid item xs={12}>
             <CardContent>
+              {
+                imageName ? statusPhoto() : ''
+              }
               <Typography variant="body2" style={{ color: '#DDD' }} component="p">
-                {postContent}
+                {
+                  postContent
+                }
               </Typography>
             </CardContent>
           </Grid>
           {/* like buttons */}
           <Grid item xs={12} style={{ marginLeft: '1rem' }}>
             {/* like ico */}
-            <IconButton id='likeBtn' onClick={handleLike}>
-              <FavoriteBorderOutlined style={likes.length > 0 ? { color: '#FF0000' } : { color: '#BDBDBD' }} />
-            </IconButton>
+            <Tooltip title='Number of likes' placement='top'>
+              <IconButton id='likeBtn' onClick={handleLike}>
+                <FavoriteBorderOutlined
+                  style={likes.length > 0 ? { color: '#FF0000' } : { color: '#BDBDBD' }}
+                />
+              </IconButton>
+            </Tooltip>
             {
-              (!likes.length) ? '' : (
-                <Typography variant="body2" component="span" className={classes.counter}>
-                  {likes.length}
-                </Typography>
-              )
+              (!likes.length)
+                ? null
+                : (
+                  <Tooltip title={
+
+                    <>
+                      {
+                        (likes.length !== 0)
+                          ? (
+                            likes.map((like, index) =>
+                              <p key={index}>
+                                {like}
+                              </p>
+                            )
+                          )
+                          : (
+                            null
+                          )
+                      }
+                    </>
+
+                  }
+                    placement='top-end'>
+                    <Typography variant="body2" component="span" className={classes.counter}>
+                      {likes.length}
+                    </Typography>
+                  </Tooltip>
+                )
             }
             {/* comment ico */}
-            <IconButton >
-              <InsertComment style={{ color: '#BDBDBD' }} />
-            </IconButton>
+            <Tooltip title='Number of comments' placement='top'>
+              <IconButton >
+                <InsertComment style={{ color: '#BDBDBD' }} />
+              </IconButton>
+            </Tooltip>
             {
               (!commnt.length) ? '' : (
                 <Typography variant="body2" component="span" className={classes.counter}>
@@ -238,18 +291,18 @@ export default function Post(props) {
 
             <CardActions disableSpacing>
               <ExpansionPanel className={classes.heading}>
-
-                <ExpansionPanelSummary
-                  aria-controls="panel1a-content"
-                  id="panel1a-header">
-                  <Typography
-                    component="span"
-                    style={{ fontSize: '1rem', marginLeft: 'auto' }}
-                  >
-                    Add comment
+                <Tooltip title='Click here to add comment' placement='top'>
+                  <ExpansionPanelSummary
+                    aria-controls="panel1a-content"
+                    id="panel1a-header">
+                    <Typography
+                      component="span"
+                      style={{ fontSize: '1rem', marginLeft: 'auto' }}
+                    >
+                      Add comment
                   </Typography>
-                </ExpansionPanelSummary>
-
+                  </ExpansionPanelSummary>
+                </Tooltip>
                 <ExpansionPanelDetails>
                   <Typography
                     component="div"

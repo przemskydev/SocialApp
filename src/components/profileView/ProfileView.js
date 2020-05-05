@@ -7,7 +7,7 @@ import './profile.css'
 export function ProfileView() {
   return (
     <>
-      <ButtonAppBar />
+      <ButtonAppBar back/>
       <Container maxWidth='xl' className='profileView'>
         <Typography
           component="div"

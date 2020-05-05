@@ -48,9 +48,12 @@ function a11yProps(index) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundImage: theme.palette.background.paper,
+    backgroundColor: '#444',
     width: '-webkit-fill-available',
   },
+  indicator: {
+    backgroundColor: '#DDD'
+  }
 }));
 
 export default function FullWidthTabs() {
@@ -168,15 +171,25 @@ export default function FullWidthTabs() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
+      <AppBar 
+      position="static" 
+      // color="default"
+      style={{backgroundColor:'#444'}}
+      >
         <Tabs
           value={value}
           onChange={handleChange}
           indicatorColor="primary"
-          textColor="primary"
+          classes={{
+            indicator: classes.indicator
+          }}
+          // textColor="primary"
           variant="fullWidth"
           aria-label="full width tabs example"
           centered
+          style={{
+            color: '#ddd',
+          }}
         >
           <Tab label="Posts" {...a11yProps(0)} />
           <Tab label="Followers" {...a11yProps(1)} />

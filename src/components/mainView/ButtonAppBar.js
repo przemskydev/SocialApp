@@ -10,6 +10,7 @@ import { app } from "../../config/base";
 import { Link } from 'react-router-dom'
 import logoImg from '../../assets/img/62605.jpg'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar(props) {
   const classes = useStyles();
   const user = app.auth().currentUser.displayName;
 
@@ -38,14 +39,25 @@ export default function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar className={classes.bar} position="fixed">
         <Toolbar>
-          
+
           {/* logo */}
           <Typography variant="h6" className={classes.title}>
             <Link
               to='/'
               className={classes.link}
             >
-              <img style ={{width: '50px', height:'50px'}} src={logoImg} title='9Social' />
+              <img
+                style={{ width: '50px', height: '50px' }}
+                src={logoImg}
+                title='9Social'
+                alt='9Social' />
+              {
+                (props.back) ? (
+                  <ArrowBackIcon />
+                ) : (
+                    ''
+                  )
+              }
             </Link>
           </Typography>
 
@@ -54,7 +66,7 @@ export default function ButtonAppBar() {
             color="inherit"
             onClick={() => app.auth().signOut()}
           >
-            <ExitToAppIcon/>
+            <ExitToAppIcon />
             Log Out {user}
           </Button>
 

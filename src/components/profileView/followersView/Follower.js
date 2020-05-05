@@ -7,9 +7,16 @@ const FollowerView = ((props) => {
     <>
       <ListItem button>
         <ListItemIcon>
-          <PersonIcon />
+          <PersonIcon
+            style={{
+              color: '#00ccd4'
+            }} />
         </ListItemIcon>
-        <ListItemText primary={props.follower} />
+        <ListItemText
+          style={{
+            color: '#DDD'
+          }}
+          primary={props.follower} />
       </ListItem>
     </>
 
