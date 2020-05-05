@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { app, storage } from "../../config/base";
+import useStatusValidation from './StatusValidation'
 import {
   Button,
   TextField,
@@ -8,9 +9,7 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core';
-import { app, storage } from "../../config/base";
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import useStatusValidation from './StatusValidation'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -66,11 +65,6 @@ export default function Status() {
   const [image, setImage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null)
-  console.log(image)
-  // console.log(`Upload... ${progress}% done`)
-  // console.log(error)
-
-
   const classes = useStyles();
 
 
@@ -99,7 +93,6 @@ export default function Status() {
         }
       )
     }
-
     setImage(null)
   }
 
@@ -136,7 +129,6 @@ export default function Status() {
     handleUpload()
   }
 
-
   return (
     <>
 
@@ -153,9 +145,7 @@ export default function Status() {
       />
 
       <CardActions disableSpacing>
-        {/* Camera button - future task */}
-
-        {/* <Tooltip title='It does not work.... yet?!' placement="right" > */}
+        {/* Camera button */}
         <input
           accept="image/*"
           className={classes.input}
@@ -164,14 +154,18 @@ export default function Status() {
           onChange={handleChange}
         />
         <label htmlFor="icon-button-file">
-          <IconButton style={{ color: '#DDD' }} aria-label="upload picture" component="span">
-            <PhotoCamera />
-          </IconButton>
+          <Tooltip title='Add some picture!' placement="right" >
+            <IconButton style={{ color: '#DDD' }} aria-label="upload picture" component="span">
+              <PhotoCamera />
+            </IconButton>
+          </Tooltip>
           {
-            image ? `${image.name}` : ''
+            image ? `${image.name}` : `${progress}` === '0' ? '' : `${progress}`
+          }
+          {
+            error ? console.error(error) : ''
           }
         </label>
-        {/* </Tooltip> */}
         {/* Share status button */}
 
         <Tooltip title='Click here to share your status' placement='left'>

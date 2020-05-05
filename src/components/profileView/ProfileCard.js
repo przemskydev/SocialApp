@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import FullWidthTabs from './ProfileTab';
-import { Grid, Paper, Button, Typography, Tooltip } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import logo from '../../assets/img/fishok.jpg'
 import { app, storage } from "../../config/base";
 import { useParams } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Paper, Button, Typography, Tooltip } from '@material-ui/core';
+import logo from '../../assets/img/fishok.jpg'
 import PublishIcon from '@material-ui/icons/Publish';
-
-//
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import FullWidthTabs from './ProfileTab';
 import useStatusPhoto from '../mainView/StatusPhoto'
 
-//
 const joinDate = () => {
   const joinDate = app.auth().currentUser.metadata.creationTime;
   const creationDate = joinDate.slice(4, 16);
@@ -60,7 +58,8 @@ export default function ProfileCard() {
     handleChange,
     handleUpload
   } = useStatusPhoto('', 'avatars', `${id}`)
-  console.log(values.url)
+  // console.log(isAvatar)
+
   useEffect(() => {
 
     app.firestore()
@@ -93,7 +92,7 @@ export default function ProfileCard() {
   useEffect(() => {
     handleDisableBtn()
   })
-
+  //upadet about me context
   const aboutMeEdit = () => {
     if (about) {
       app.firestore()
@@ -106,15 +105,15 @@ export default function ProfileCard() {
 
     }
   }
-
+  //change valuet edit btn
   const handleEdit = () => {
     setEdit(!edit)
   }
-
+  //set about me value fron imput
   const handleAbout = (e) => {
     setAbout(e.target.value)
   }
-
+  //render about me context or default context and change to input if edit clicked
   const field = () => {
     if (!edit) {
       return (
@@ -141,7 +140,7 @@ export default function ProfileCard() {
       )
     }
   }
-
+  //disable follow button 
   const handleDisableBtn = () => {
     const current = app.auth().currentUser.displayName;
 
@@ -161,12 +160,12 @@ export default function ProfileCard() {
     borderColor: '#00A1BD',
     color: '#00A1BD'
   }
-
+  //DM btn color
   const dmBtn = {
     borderColor: '#d161e6',
     color: '#d161e6'
   }
-
+  //conditional rendering buttons
   const displayButton = (id) => {
     const currentUser = app.auth().currentUser.displayName
     const user = id
@@ -219,7 +218,7 @@ export default function ProfileCard() {
       )
     }
   }
-
+  //set follower 
   const follow = () => {
     const userRef = app.firestore().collection('user').doc(`${id}`);
     const currentUser = app.auth().currentUser.displayName;
@@ -253,7 +252,7 @@ export default function ProfileCard() {
 
 
   }
-
+  //set following
   const setFollowingProfile = (currentUser, follower) => {
     const userLogged = currentUser;
     const userToFollow = follower;
@@ -285,7 +284,7 @@ export default function ProfileCard() {
               direction="row"
               justify="center"
               alignItems="center">
-              <Grid item xs={6}>
+              <Grid item xs={3}>
 
                 <input
                   accept="image/*"
@@ -302,16 +301,25 @@ export default function ProfileCard() {
                       name='avatar'
                       alt="logo"
                       src={avatar ? avatar : values.url ? values.url : logo}
-                    // src={setAvatarPhoto} 
                     />
                   </Tooltip>
 
                 </label>
-                <Button color='secondary' onClick={handleUpload}>Upload</Button>
-                <PublishIcon style={{ color: 'green' }} />
 
+              </Grid>
+              <Grid item xs={3}>
 
-
+                {values.url ? '' :
+                  values.image !== undefined ?
+                    <>
+                      <Button onClick={handleUpload}>
+                        <Tooltip title='Click to upload new photo' placement='top'>
+                          <PublishIcon style={{ color: 'green' }} />
+                        </Tooltip>
+                      </Button>
+                    </>
+                    : ''
+                }
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="h4" style={{ color: '#ddd' }}>

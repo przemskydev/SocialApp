@@ -154,7 +154,7 @@ export default function Post(props) {
     }
 
     return (
-      <img src={url} alt='status photo' />
+      <img src={url} alt='status' />
     )
   }
 
