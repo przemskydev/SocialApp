@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import FullWidthTabs from './ProfileTab';
-import { Grid, Paper, Button, Typography } from '@material-ui/core';
+import { Grid, Paper, Button, Typography, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../../assets/img/fishok.jpg'
-import { app } from "../../config/base";
+import { app, storage } from "../../config/base";
 import { useParams } from 'react-router-dom';
+import PublishIcon from '@material-ui/icons/Publish';
 
+//
+import useStatusPhoto from '../mainView/StatusPhoto'
+
+//
 const joinDate = () => {
   const joinDate = app.auth().currentUser.metadata.creationTime;
   const creationDate = joinDate.slice(4, 16);
@@ -35,25 +40,51 @@ const useStyles = makeStyles((theme) => ({
   },
   about: {
     borderBottom: '1px solid #00A1BD',
-  }
+  },
+  input: {
+    display: 'none',
+  },
 }));
 
 export default function ProfileCard() {
   let { id } = useParams()
   const classes = useStyles();
 
-  const [about, setAbout] = useState(() => {
+  const [about, setAbout] = useState('');
+  const [isAvatar, setAvatar] = useState('');
+  const [avatar, setAvatarPhoto] = useState('')
+  const [avName, setAvName] = useState('')
+  const [edit, setEdit] = useState(false)
+  const {
+    values,
+    handleChange,
+    handleUpload
+  } = useStatusPhoto('', 'avatars', `${id}`)
+  console.log(values.url)
+  useEffect(() => {
+
     app.firestore()
       .collection('user')
       .doc(`${id}`)
       .get()
       .then(doc => {
-        setAbout(doc.data().aboutme)
+        setAbout(doc.data().aboutme);
+        setAvatar(doc.data().avatar);
+        setAvName(doc.data().avatarPhoto)
       })
       .catch(err => console.errror(err))
-  });
-  const [edit, setEdit] = useState(false)
-  // const [followed, setFollowed] = useState(false)
+  })
+
+  useEffect(() => {
+    if (isAvatar) {
+      storage.ref(`avatars/${id}`)
+        .child(`${avName}`)
+        .getDownloadURL()
+        .then(url => {
+          setAvatarPhoto(url)
+        })
+    }
+  }, [avName])
 
   useEffect(() => {
     aboutMeEdit()
@@ -209,7 +240,7 @@ export default function ProfileCard() {
 
             newFollowersList.push(followerData);
             trans.update(userRef, { followers: newFollowersList })
-            
+
             document.querySelector('#followBtn').classList.add('Mui-disabled')
 
           }
@@ -255,7 +286,32 @@ export default function ProfileCard() {
               justify="center"
               alignItems="center">
               <Grid item xs={6}>
-                <img className={classes.image} alt="logo" src={logo} />
+
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  id="icon-button-file"
+                  type="file"
+                  onChange={handleChange} />
+
+                <label htmlFor="icon-button-file">
+
+                  <Tooltip title="Click to upload profile photo" placement="right-start">
+                    <img
+                      className={classes.image}
+                      name='avatar'
+                      alt="logo"
+                      src={avatar ? avatar : values.url ? values.url : logo}
+                    // src={setAvatarPhoto} 
+                    />
+                  </Tooltip>
+
+                </label>
+                <Button color='secondary' onClick={handleUpload}>Upload</Button>
+                <PublishIcon style={{ color: 'green' }} />
+
+
+
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="h4" style={{ color: '#ddd' }}>

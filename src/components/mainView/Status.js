@@ -66,7 +66,7 @@ export default function Status() {
   const [image, setImage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null)
-
+  console.log(image)
   // console.log(`Upload... ${progress}% done`)
   // console.log(error)
 
@@ -115,7 +115,7 @@ export default function Status() {
       time = `${hours}:${minutes}:${sec} ${day}/${(month < 10) ? ('0' + month) : month}/${year}`,
       userName = app.auth().currentUser.displayName,
       isImage = image ? true : false,
-      imageName = image.name;
+      imageName = image ? image.name : '';
 
 
     app
