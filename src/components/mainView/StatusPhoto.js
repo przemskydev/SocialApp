@@ -69,8 +69,6 @@ function useStatusPhoto(initial, status, id) {
       .update({
         "avatar": true,
         "avatarPhoto": values.image.name
-      }).then(() => {
-        console.log(`Document successfully updated!`)
       });
   }
 
