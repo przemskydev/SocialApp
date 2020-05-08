@@ -71,7 +71,7 @@ export default function ProfileCard() {
         setAvatar(doc.data().avatar);
         setAvName(doc.data().avatarPhoto)
       })
-      .catch(err => console.errror(err))
+      .catch(err => console.error(err))
   })
 
   useEffect(() => {
