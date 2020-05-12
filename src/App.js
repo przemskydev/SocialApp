@@ -17,7 +17,7 @@ function App() {
     <AuthProvider>
       <Router>
         <>
-          <PrivateRoute exact path='/' component={Main} />
+          <PrivateRoute exact path='' component={Main} />
           <Route path='/login' component={SignIn} />
           <Route path='/signup' component={SignUp} />
           <Route path='/profile/:id' component={ProfileView} />

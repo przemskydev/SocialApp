@@ -11,8 +11,7 @@
     "@testing-library/user-event": "^7.2.1",
     "firebase": "^7.13.1",
     "firebaseui": "^4.5.0",
-    "formik": "^2.1.4",
-    "re-base": "^4.0.0",
+    "gh-pages": "^2.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
@@ -20,11 +19,14 @@
     "react-spinners": "^0.8.1",
     "react-swipeable-views": "^0.13.9"
   },
+  "homepage": "https://przemskydev.github.io/nine-social",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
