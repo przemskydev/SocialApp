@@ -18,8 +18,8 @@ function App() {
       <Router>
         <>
           <PrivateRoute exact path='/' component={Main} />
-          <Route exact path='/login' component={SignIn} />
-          <Route exact path='/signup' component={SignUp} />
+          <Route path='/login' component={SignIn} />
+          <Route path='/signup' component={SignUp} />
           <Route path='/profile/:id' component={ProfileView} />
         </>
       </Router>
