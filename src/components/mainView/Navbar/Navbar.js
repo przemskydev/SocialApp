@@ -6,9 +6,9 @@ import {
   Typography,
   Button
 } from '@material-ui/core/';
-import { app } from "../../config/base";
+import { app } from "../../../config/base";
 import { Link } from 'react-router-dom'
-import logoImg from '../../assets/img/62605.jpg'
+import logoImg from '../../../assets/img/logo.svg'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Comment from './Comment'
+import Comment from './CommentComponent'
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,

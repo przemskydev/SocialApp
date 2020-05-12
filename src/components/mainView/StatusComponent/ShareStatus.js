@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { app, storage } from "../../config/base";
-import useStatusValidation from './StatusValidation'
+import { app, storage } from "../../../config/base";
+import useStatusValidation from '../StatusValidation'
 import {
   Button,
   TextField,

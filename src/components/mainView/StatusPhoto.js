@@ -16,9 +16,6 @@ function useStatusPhoto(initial, status, id) {
         image: e.target.files[0]
       }) : console.error('Select image')
     }
-
-
-    // console.log(e.target.files[0])
   }
 
   function handleUpload() {
@@ -51,8 +48,6 @@ function useStatusPhoto(initial, status, id) {
               })
             })
         },
-        // setAvatar()
-
       )
     }
 
