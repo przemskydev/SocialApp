@@ -5,7 +5,7 @@ import {
   Button,
   Tooltip
 } from '@material-ui/core';
-import { app } from "../../config/base";
+import { app } from "../../../config/base";
 import { Link } from 'react-router-dom'
 
 

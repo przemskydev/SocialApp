@@ -1,6 +1,6 @@
 import * as React from 'react';
-import ButtonAppBar from './ButtonAppBar';
-import MainView from './MainView';
+import Navbar from './Navbar/Navbar';
+import MainView from './templates/MainView';
 import { Typography, Container } from '@material-ui/core';
 import './main.css'
 
@@ -14,7 +14,7 @@ import './main.css'
 export function Main() {
   return (
     <>
-      <ButtonAppBar />
+      <Navbar />
       <Container maxWidth='xl' className='mainView'>
         <Typography
           component="div"

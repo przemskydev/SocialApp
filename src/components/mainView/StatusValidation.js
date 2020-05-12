@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 
-
 function useStatusValidation(initialState, auth) {
 
   const [values, setValues] = useState(initialState)
