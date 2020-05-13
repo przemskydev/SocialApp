@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 
-
 function useFormValidation(initialState, validate, authenticate) {
 
   const [values, setValues] = useState(initialState)
@@ -56,6 +55,5 @@ function useFormValidation(initialState, validate, authenticate) {
   //return from hook as object
   return { handleSignUp, handleChange, handleBlur, values, errors }
 }
-
 
 export default useFormValidation;

@@ -19,7 +19,7 @@
     "react-spinners": "^0.8.1",
     "react-swipeable-views": "^0.13.9"
   },
-  "homepage": "https://przemskydev.github.io/nine-social",
+  "homepage": "https://przemskydev.github.io/socialapp",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

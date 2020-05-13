@@ -67,7 +67,6 @@ const SignUp = ({ history }) => {
   }
 
   async function authenticateUser() {
-    // event.preventDefault();
     const { email, password, firstName } = values;
     try {
       await app

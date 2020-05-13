@@ -67,7 +67,6 @@ export default function Status() {
   const [error, setError] = useState(null)
   const classes = useStyles();
 
-
   function handleChange(e) {
     const file = e.target.files[0];
     const fileType = file.type;
@@ -109,7 +108,6 @@ export default function Status() {
       userName = app.auth().currentUser.displayName,
       isImage = image ? true : false,
       imageName = image ? image.name : '';
-
 
     app
       .firestore()

@@ -19,7 +19,7 @@ export default function PostsList() {
   const classes = useStyles();
 
   const [post, setPostList] = useState(null);
-  console.log(post)
+
   useEffect(() => {
     listenForPosts()
   }, [])

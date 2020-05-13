@@ -9,9 +9,7 @@ export function ProfileView() {
     <>
       <Navbar back/>
       <Container maxWidth='xl' className='profileView'>
-        <Typography
-          component="div"
-        >
+        <Typography component="div">
           <ProfileCard />
         </Typography>
       </Container>

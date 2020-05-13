@@ -4,7 +4,6 @@ import {
   Button,
   CssBaseline,
   TextField,
-  // Link,
   Grid,
   Container,
   Typography
@@ -15,7 +14,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { withRouter, Redirect } from "react-router";
 import { app } from "../../config/base";
 import { AuthContext } from "../../config/Auth";
-
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -58,7 +56,6 @@ const SignIn = ({ history }) => {
   const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
-    // console.log(currentUser.metadata.creationTime)
     return <Redirect to="/" />;
   }
 

@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Button, Typography, Tooltip } from '@material-ui/core';
 import logo from '../../assets/img/fishok.jpg'
 import PublishIcon from '@material-ui/icons/Publish';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import FullWidthTabs from './ProfileTab';
 import useStatusPhoto from '../mainView/StatusPhoto'
 
@@ -58,10 +57,8 @@ export default function ProfileCard() {
     handleChange,
     handleUpload
   } = useStatusPhoto('', 'avatars', `${id}`)
-  // console.log(isAvatar)
 
   useEffect(() => {
-
     app.firestore()
       .collection('user')
       .doc(`${id}`)
@@ -226,31 +223,21 @@ export default function ProfileCard() {
 
     app.firestore().runTransaction(trans => {
       return trans.get(userRef).then(doc => {
-
         if (!doc.data().followers) {
           trans.set({
             followers: followerData
           })
-
         } else {
           const newFollowersList = doc.data().followers;
-
           if (newFollowersList.indexOf(followerData) < 0) {
-
             newFollowersList.push(followerData);
             trans.update(userRef, { followers: newFollowersList })
-
             document.querySelector('#followBtn').classList.add('Mui-disabled')
-
           }
-
         }
       })
     })
-
     setFollowingProfile(currentUser, id)
-
-
   }
   //set following
   const setFollowingProfile = (currentUser, follower) => {

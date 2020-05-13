@@ -3,8 +3,7 @@ import {
   Avatar,
   ListItem,
   ListItemAvatar,
-  ListItemText,
-  Typography
+  ListItemText
 } from '@material-ui/core'
 
 import IconBar from './IconBar'
@@ -39,7 +38,6 @@ const userPostView = (({ author, context, commentList, likes, img }) => {
         />
       </ListItem>
     </>
-
   )
 })
 

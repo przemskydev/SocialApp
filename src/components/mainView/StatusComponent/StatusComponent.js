@@ -34,8 +34,7 @@ export default function HowAreYou() {
         {/* Header avatar and name */}
         <CardHeaderComponent />
         {/* Status input */}
-        <Status />
-        
+        <Status />    
       </Card>
     </Grid>
   )

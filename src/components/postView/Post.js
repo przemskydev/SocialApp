@@ -81,7 +81,7 @@ export default function Post(props) {
     likes = props.likes,
     image = props.image,
     imageName = props.imageName;
-  //comment section
+
   const [comment, setComment] = useState('');
   const [url, setUrl] = useState('')
 
@@ -115,7 +115,6 @@ export default function Post(props) {
   }
 
   const showCommentList = () => {
-
     return (
       commnt.map(({ author, commentContext }, id) => (
         <Comment
@@ -132,21 +131,16 @@ export default function Post(props) {
       let postList = document.querySelectorAll('#likeBtn')
       postList.forEach(post =>
         post.addEventListener('click', (e) => {
-
           e.target.style.color = 'red'
-
         }))
     }
     return redHeart()
-
   })
 
   const statusPhoto = () => {
     if (image) {
       const photoRef = storage.ref(`status/${ids}`).child(`${imageName}`)
-      // console.log(photoRef)
       photoRef.getDownloadURL().then(url => {
-        // setUrl(url)
         setUrl(url)
       }).catch(error => {
         console.error(error)
@@ -164,24 +158,18 @@ export default function Post(props) {
 
     app.firestore().runTransaction(trans => {
       return trans.get(userRef).then(doc => {
-
         if (!doc.data().likes) {
           trans.set({
             likes: currentUser
           })
-
         } else {
           const newLike = doc.data().likes;
-
           if ((newLike.indexOf(currentUser)) < 0) {
-
             newLike.push(currentUser);
             trans.update(userRef, { likes: newLike })
-
           } else {
             console.error('You like it')
           }
-
         }
       })
     })
