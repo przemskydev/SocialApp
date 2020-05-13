@@ -8,7 +8,6 @@ import {
 import { app } from "../../../config/base";
 import { Link } from 'react-router-dom'
 
-
 const linkStyle = {
   textDecoration: 'none',
   cursor: 'pointer'
